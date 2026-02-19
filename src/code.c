@@ -24,6 +24,7 @@ int main (int argc, char* argv[]) {
 				r = rand() % len;
 				printf("%s ", words[r]);
 			}
+			printf("\n");
 			return 0;
 		} else {
 			printf("Error! Input is invalid or less than 1.\n");
