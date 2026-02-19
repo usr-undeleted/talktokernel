@@ -6,5 +6,5 @@ Running make clean (to remove bin directory) is not needed if you want to re-com
 # Usage:
 <binary command thingimajig> <number>  
 Invalid inputs will give an error... hopefully-  
-I'm looking fowards to making words be located in a lib or something, to make adding more easier, but for now, if you want to add your own words, edit the "code.c" file located inside "src", and on the array declaration, simply add more words with proper syntax.  
+All words are located inside "words.h". If you want to add/change/remove words, edit the file with proper syntax, and run make (fancy or not) if needed.  
 "make fancy" makes a symbolic link!
