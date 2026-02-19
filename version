@@ -3,3 +3,6 @@ Start of it all!
 
 1.0.1 19/2/2026
 Improved printing
+
+1.1.0 19/2/2026
+Put the words in a header file for organization and made Makefile fancy

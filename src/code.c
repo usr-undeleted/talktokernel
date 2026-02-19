@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
+#include "words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
 
 int main (int argc, char* argv[]) {
-	const char *words[] = {"For","While","If","Else","Declare","Allocate","Memory"};
 	int num; /* arg 1 */
 	unsigned int len = sizeof(words) / sizeof(words[0]); /* gets length of array for more robust-ness */
 
