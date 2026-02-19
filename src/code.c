@@ -8,21 +8,20 @@
 int main (int argc, char* argv[]) {
 	const char *words[] = {"For","While","If","Else","Declare","Allocate","Memory"};
 	int num; /* arg 1 */
-	unsigned int len = sizeof(words) / sizeof(words[0]) + 1; /* gets length of array for more robust-ness */
+	unsigned int len = sizeof(words) / sizeof(words[0]); /* gets length of array for more robust-ness */
 
 	int r; /* random value used in for loop */
 	int seed; /* seed edited in for loop */
 	int buf; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
-		num = atoi(argv[1]);
-		printf("%i\n", num)
+		num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
 
 		if (num >= 1) { /* check to see if inputted number is valid */
 			for (int i = 0; i < num; i++) {
 				buf = getrandom(&seed, sizeof(seed), 0);
 				srand(seed);
-				r = rand() % len + 1;
+				r = rand() % len;
 				printf("%s\n", words[r]);
 			}
 			return 0;
