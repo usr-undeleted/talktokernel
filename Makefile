@@ -1,7 +1,7 @@
 compiling:
 	rm -rf bin
-	gcc -n binary src/*.c
+	gcc src/*.c
 	mkdir bin
-	mv binary bin
+	mv a.out bin/binary
 clean:
 	rm -rf bin
