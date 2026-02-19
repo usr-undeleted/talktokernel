@@ -22,7 +22,7 @@ int main (int argc, char* argv[]) {
 				buf = getrandom(&seed, sizeof(seed), 0);
 				srand(seed);
 				r = rand() % len;
-				printf("%s\n", words[r]);
+				printf("%s ", words[r]);
 			}
 			return 0;
 		} else {
