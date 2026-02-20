@@ -8,7 +8,7 @@
 #define uint unsigned int
 
 int main (int argc, char* argv[]) {
-	int num = 10; /* arg 1: default value */
+	int num = 0; /* arg 1*/
 	const uint len1 = sizeof(words) / sizeof(words[0]);
 	const uint len2 = sizeof(marks) / sizeof(marks[0]);
 	const uint len3 = sizeof(basic) / sizeof(basic[0]);
