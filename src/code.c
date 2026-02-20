@@ -26,13 +26,13 @@ int main (int argc, char* argv[]) {
 				srand(seed);
 				r1 = rand() % len1;
 				r2 = rand() % len2;
-				printf("%s ", marks [r2]);
 
-				printf("%s ", words[r1]); /* word printing */
-				if (r2 = 0) {
-					printf("%s ", marks[r2]); /* mark printing */
+				printf(" %s", words[r1]); /* word printing */
+
+				if ((int)rand() % 5 == 0) { /* mark printing */
+					printf("%s ", marks[r2]);
 				} else {
-					// dot dot dot
+					// crickets
 				}
 			}
 			printf("\n");
