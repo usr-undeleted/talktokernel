@@ -8,9 +8,12 @@
 
 int main (int argc, char* argv[]) {
 	int num; /* arg 1 */
-	unsigned int len = sizeof(words) / sizeof(words[0]); /* gets length of array for more robust-ness */
+	unsigned int len1 = sizeof(words) / sizeof(words[0]);
+	unsigned int len2 = sizeof(marks) / sizeof(marks[0]);
 
-	int r; /* random value used in for loop */
+	int r1; /* random value for words */
+	int r2; /* random value for marks */
+
 	int seed; /* seed edited in for loop */
 	int buf; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
@@ -21,8 +24,17 @@ int main (int argc, char* argv[]) {
 			for (int i = 0; i < num; i++) {
 				buf = getrandom(&seed, sizeof(seed), 0);
 				srand(seed);
-				r = rand() % len;
-				printf("%s ", words[r]);
+				r1 = rand() % len1;
+				r2 = rand() % len2;
+				printf("%d ", r2);
+
+				printf("%s ", marks[r2]);
+				printf("%s ", words[r1]); /* word printing */
+				if (r2 == 0) {
+					printf("%s ", marks[r2]); /* mark printing */
+				} else {
+					printf("Fail! ");
+				}
 			}
 			printf("\n");
 			return 0;
