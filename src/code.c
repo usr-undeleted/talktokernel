@@ -1,50 +1,59 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
-#include "../words.h"
+
+#include "words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
 
-#define uint unsigned int
+int main (int const argc, char** argv)
+{
+    /* Tip. Explain what the arguments do in the error messages */
+    if(argc != 2)
+    {
+        printf("Error! Did you type a number greater than 0 (if you typed an arg...)?\n");
+        return 1;
+    }
 
-int main (int argc, char* argv[]) {
-	int num = 0; /* arg 1*/
-	const uint len1 = sizeof(words) / sizeof(words[0]);
-	const uint len2 = sizeof(marks) / sizeof(marks[0]);
-	const uint len3 = sizeof(basic) / sizeof(basic[0]);
+    int const num = atoi(argv[1]);
+    if(num < 1)
+    {
+        printf("Error! Input is invalid or less than 1.\n");
+        return 1;
 
-	uint r1 = 0; /* random value for words */
-	uint r2 = 0; /* random value for marks */
-	uint r3 = 0; /* random value for basics */
+    }
 
-	int seed = 0; /* seed edited in for loop */
-	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
+    unsigned int const len1 = sizeof(words) / sizeof(words[0]);
+    unsigned int const len2 = sizeof(marks) / sizeof(marks[0]);
+    unsigned int const len3 = sizeof(basic) / sizeof(basic[0]);
 
-	if (argc == 2) { /* check to see if there are enough args */
-		int num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
+    /* Tip. Make the names elaborate enough where you aren't required to explain via comments */
+    int r1 = 0; /* random value for words */
+    int r2 = 0; /* random value for marks */
+    int r3 = 0; /* random value for basics */
 
-		if (num >= 1) { /* check to see if inputted number is valid */
-			for (int i = 0; i < num; i++) {
-				buf = getrandom(&seed, sizeof(seed), 0);
-				srand(seed);
-				r1 = rand() % len1; /* words */
-				r2 = rand() % len2; /* marks */
-				r3 = rand() % len3; /* basics */
+    int seed = 0; /* seed edited in for loop */
+    int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
-				printf(" %s %s", words[r1], basic[r3]); /* word printing */
 
-				if (rand() % 5 == 0) { /* mark printing */
-					printf("%s ", marks[r2]);
-				}
-			}
-			printf("\n--Wise words from the linux kernel...\n");
-			return 0;
-		} else {
-			printf("Error! Input is invalid or less than 1.\n");
-			return 2;
-		}
-	} else {
-		printf("Error! Did you type a number greater than 0 (if you typed an arg...)?\n");
-		return 1;
-	}
+
+    for (int i = 0; i < num; i++)
+    {
+        buf = getrandom(&seed, sizeof(seed), 0);
+        srand(seed);
+        r1 = rand() % len1; /* words */
+        r2 = rand() % len2; /* marks */
+        r3 = rand() % len3; /* basics */
+
+        printf(" %s %s", words[r1], basic[r3]); /* word printing */
+
+        if(rand() % 5 == 0)
+        {
+            printf("%s ", marks[r2]);
+        }
+    }
+    printf("\n--Wise words from the linux kernel...\n");
+
+    return 0;
 }
