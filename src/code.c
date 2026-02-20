@@ -38,7 +38,7 @@ int main (int argc, char* argv[]) {
 					// crickets
 				}
 			}
-			printf("\n");
+			printf("\n--Wise words from the linux kernel...\n");
 			return 0;
 		} else {
 			printf("Error! Input is invalid or less than 1.\n");
