@@ -21,7 +21,7 @@ int main (int argc, char* argv[]) {
 	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
-		num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
+		int num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
 
 		if (num >= 1) { /* check to see if inputted number is valid */
 			for (int i = 0; i < num; i++) {
@@ -33,10 +33,8 @@ int main (int argc, char* argv[]) {
 
 				printf(" %s %s", words[r1], basic[r3]); /* word printing */
 
-				if ((int)rand() % 5 == 0) { /* mark printing */
+				if (rand() % 5 == 0) { /* mark printing */
 					printf("%s ", marks[r2]);
-				} else {
-					// crickets
 				}
 			}
 			printf("\n--Wise words from the linux kernel...\n");
