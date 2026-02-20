@@ -17,7 +17,7 @@ int main (int argc, char* argv[]) {
 	uint r2 = 0; /* random value for marks */
 	uint r3 = 0; /* random value for basics */
 
-	uint seed = 0; /* seed edited in for loop */
+	int seed = 0; /* seed edited in for loop */
 	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
