@@ -6,7 +6,7 @@ compiling:
 clean:
 	rm -rf bin
 fancy:
-	rm -rf bin
+	rm -rf bin binary
 	gcc -I ./ src/*.c
 	mkdir bin
 	mv a.out bin/binary
