@@ -14,7 +14,7 @@ int main (int argc, char* argv[]) {
 
 	int r1 = 0; /* random value for words */
 	int r2 = 0; /* random value for marks */
-	int r3 = 0;
+	int r3 = 0; /* random value for basics */
 
 	int seed = 0; /* seed edited in for loop */
 	int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
