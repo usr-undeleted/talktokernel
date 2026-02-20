@@ -1,12 +1,10 @@
 1.0.0 19/2/2026
 Start of it all!
-
 1.0.1 19/2/2026
 Improved printing
 
 1.1.0 19/2/2026
 Put the words in a header file for organization and made Makefile fancy
-
 1.1.1 19/2/2026
 Added more words
 
@@ -15,6 +13,7 @@ More words, added marks with cool chance mechanic, more marks and other minimal 
 
 1.3.0 20/2/2026
 New word system with a modular (when writing) system for basic english words
-
 1.3.1 20/2/2026
 Added "non" to words
+1.3.2 20/2/2026
+Fixed error message to make more sense

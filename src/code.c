@@ -45,7 +45,7 @@ int main (int argc, char* argv[]) {
 			return 2;
 		}
 	} else {
-		printf("Error! Did you type just a number for the second arg (if you typed an arg...)?\n");
+		printf("Error! Did you type a number greater than 0 (if you typed an arg...)?\n");
 		return 1;
 	}
 }
