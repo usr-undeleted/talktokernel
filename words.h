@@ -1,7 +1,17 @@
 #ifndef WORDS_H
 #define WORDS_H
 
-static const char *words[] = {"Hello","Bye","Declare","Allocate","Memory", "True", "False", "No", "Yes", "Terrible", "Bad", "Ok", "Good", "Amazing", "Love", "Hate", "Friend", "Foe", "Organic", "Eletronic", "Machine", "Human", "Embrace", "Reject", "Accept", "Fear", "Thrill", "Kill", "Help", "Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint", "Nature", "City", "Plant", "Cement", "Advancement", "Destruction", "Non"};
+static const char *words[] = { //Hello, Bye
+	/* coding words */"Declare","Allocate","Memory","True","False","Compile",
+	/* yes/no, ratings, etc */"No","Yes","Terrible","Bad","Ok","Good","Amazing","Non",
+	/* emotions */"Love","Hate","Empathy","Disgust","Fear","Thrill",
+	/* people and their classifications */"Friend", "Foe","Ally","Leader","Slave","Worker",
+	/* tech/biology */"Organic","Eletronic","Machine","Human","Computer","Machine","Nature","Plant",
+	/* verbs */"Embrace","Reject","Accept","Kill","Help","Destroy","Achieve",
+	/* linux */"Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint",
+	/* idk, name later */ "Achivement","Destruction","Suffering",
+	/* objects */ "City","Cement","Brick","Car"
+};
 
 static const char *basic[] = {
 	/* pronouns */ "I","You","He","She","It","We","You","They","Me","His","Hers","Its","Theirs","Ours","Mine","Yours",

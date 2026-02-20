@@ -23,4 +23,4 @@ a is for complete code changes, for example, a total rewrite of the code, or an 
 b is for significant changes, something like more error messages, a huge amount of new words, etc  
 c is for minimal changes, something like correcting typos in words, redoing a small amount of syntax, or correcting a small issue  
 5. For adding new words:  
-just add cool new words that aren't innapropriate or that actually exist in english  
+just add cool new words that aren't innapropriate or that actually exist in english, and make sure they don't already exist  
