@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
-#include "words.h"
+#include "../words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
 
