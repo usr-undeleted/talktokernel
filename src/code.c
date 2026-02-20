@@ -13,12 +13,12 @@ int main (int argc, char* argv[]) {
 	const uint len2 = sizeof(marks) / sizeof(marks[0]);
 	const uint len3 = sizeof(basic) / sizeof(basic[0]);
 
-	int r1 = 0; /* random value for words */
-	int r2 = 0; /* random value for marks */
-	int r3 = 0; /* random value for basics */
+	uint r1 = 0; /* random value for words */
+	uint r2 = 0; /* random value for marks */
+	uint r3 = 0; /* random value for basics */
 
-	int seed = 0; /* seed edited in for loop */
-	int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
+	uint seed = 0; /* seed edited in for loop */
+	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
 		num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
