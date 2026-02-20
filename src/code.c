@@ -7,15 +7,15 @@
 /*add support for making sure getrandom works always with ssize_t or something*/
 
 int main (int argc, char* argv[]) {
-	int num; /* arg 1 */
+	int num = 0; /* arg 1 */
 	unsigned int len1 = sizeof(words) / sizeof(words[0]);
 	unsigned int len2 = sizeof(marks) / sizeof(marks[0]);
 
-	int r1; /* random value for words */
-	int r2; /* random value for marks */
+	int r1 = 0; /* random value for words */
+	int r2 = 0; /* random value for marks */
 
-	int seed; /* seed edited in for loop */
-	int buf; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
+	int seed = 0; /* seed edited in for loop */
+	int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
 		num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
@@ -26,14 +26,13 @@ int main (int argc, char* argv[]) {
 				srand(seed);
 				r1 = rand() % len1;
 				r2 = rand() % len2;
-				printf("%d ", r2);
+				printf("%s ", marks [r2]);
 
-				printf("%s ", marks[r2]);
 				printf("%s ", words[r1]); /* word printing */
-				if (r2 == 0) {
+				if (r2 = 0) {
 					printf("%s ", marks[r2]); /* mark printing */
 				} else {
-					printf("Fail! ");
+					// dot dot dot
 				}
 			}
 			printf("\n");
