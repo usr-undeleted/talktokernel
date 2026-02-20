@@ -3,7 +3,7 @@ compiling:
 	mkdir bin
 	gcc src/*.c -o bin/binary
 clean:
-	rm -rf bin
+	rm -rf bin binary
 fancy:
 	rm -rf bin binary
 	mkdir bin

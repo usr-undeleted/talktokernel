@@ -1,16 +1,17 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
 #include "../words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
 
+#define uint unsigned int
+
 int main (int argc, char* argv[]) {
-	int num = 0; /* arg 1 */
-	unsigned int len1 = sizeof(words) / sizeof(words[0]);
-	unsigned int len2 = sizeof(marks) / sizeof(marks[0]);
-	unsigned int len3 = sizeof(basic) / sizeof(basic[0]);
+	int num = 10; /* arg 1: default value */
+	const uint len1 = sizeof(words) / sizeof(words[0]);
+	const uint len2 = sizeof(marks) / sizeof(marks[0]);
+	const uint len3 = sizeof(basic) / sizeof(basic[0]);
 
 	int r1 = 0; /* random value for words */
 	int r2 = 0; /* random value for marks */
