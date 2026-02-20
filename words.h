@@ -1,7 +1,7 @@
 #ifndef WORDS_H
 #define WORDS_H
 
-static const char *words[] = {"Declare","Allocate","Memory", "True", "False", "No", "Yes", "Terrible", "Bad", "Ok", "Good", "Amazing", "Love", "Hate", "Friend", "Foe", "Organic", "Eletronic", "Machine", "Human", "Embrace", "Reject", "Accept", "Fear", "Thrill", "Kill", "Help", "Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint", "Nature", "City", "Plant", "Cement", "Advancement", "Destruction", "Non"};
+static const char *words[] = {"Hello","Bye","Declare","Allocate","Memory", "True", "False", "No", "Yes", "Terrible", "Bad", "Ok", "Good", "Amazing", "Love", "Hate", "Friend", "Foe", "Organic", "Eletronic", "Machine", "Human", "Embrace", "Reject", "Accept", "Fear", "Thrill", "Kill", "Help", "Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint", "Nature", "City", "Plant", "Cement", "Advancement", "Destruction", "Non"};
 
 static const char *basic[] = {
 	/* pronouns */ "I","You","He","She","It","We","You","They","Me","His","Hers","Its","Theirs","Ours","Mine","Yours",
