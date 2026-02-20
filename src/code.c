@@ -5,22 +5,18 @@
 #include "words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
-
 int main (int argc, char* argv[]) {
-	int num = 0; /* arg 1 */
-	unsigned int len1 = sizeof(words) / sizeof(words[0]);
-	unsigned int len2 = sizeof(marks) / sizeof(marks[0]);
-	unsigned int len3 = sizeof(basic) / sizeof(basic[0]);
+	int len1 = sizeof(words) / sizeof(words[0]);
+	int len2 = sizeof(marks) / sizeof(marks[0]);
+	int len3 = sizeof(basic) / sizeof(basic[0]);
 
-	int r1 = 0; /* random value for words */
-	int r2 = 0; /* random value for marks */
-	int r3 = 0; /* random value for basics */
+	int r1, r2, r3 = 0; /* random value for words, marks and basics */
 
 	int seed = 0; /* seed edited in for loop */
 	int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
-		num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
+		int num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
 
 		if (num >= 1) { /* check to see if inputted number is valid */
 			for (int i = 0; i < num; i++) {
@@ -32,10 +28,8 @@ int main (int argc, char* argv[]) {
 
 				printf(" %s %s", words[r1], basic[r3]); /* word printing */
 
-				if ((int)rand() % 5 == 0) { /* mark printing */
+				if (rand() % 5 == 0) { /* mark printing */
 					printf("%s ", marks[r2]);
-				} else {
-					// crickets
 				}
 			}
 			printf("\n--Wise words from the linux kernel...\n");
