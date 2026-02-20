@@ -1,19 +1,24 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
-#include "words.h"
+#include "../words.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
-int main (int argc, char* argv[]) {
-	int len1 = sizeof(words) / sizeof(words[0]);
-	int len2 = sizeof(marks) / sizeof(marks[0]);
-	int len3 = sizeof(basic) / sizeof(basic[0]);
 
-	int r1, r2, r3 = 0; /* random value for words, marks and basics */
+#define uint unsigned int
+
+int main (int argc, char* argv[]) {
+	int num = 0; /* arg 1*/
+	const uint len1 = sizeof(words) / sizeof(words[0]);
+	const uint len2 = sizeof(marks) / sizeof(marks[0]);
+	const uint len3 = sizeof(basic) / sizeof(basic[0]);
+
+	uint r1 = 0; /* random value for words */
+	uint r2 = 0; /* random value for marks */
+	uint r3 = 0; /* random value for basics */
 
 	int seed = 0; /* seed edited in for loop */
-	int buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
+	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
 
 	if (argc == 2) { /* check to see if there are enough args */
 		int num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */

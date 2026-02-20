@@ -1,13 +1,11 @@
 compiling:
 	rm -rf bin binary
-	gcc -I ./ src/*.c
 	mkdir bin
-	mv a.out bin/binary
+	gcc src/*.c -o bin/binary
 clean:
-	rm -rf bin
+	rm -rf bin binary
 fancy:
 	rm -rf bin binary
-	gcc -I ./ src/*.c
 	mkdir bin
-	mv a.out bin/binary
+	gcc src/*.c -o bin/binary
 	ln -s bin/binary binary
