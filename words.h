@@ -6,7 +6,7 @@ static const char *words[] = {"Declare","Allocate","Memory", "True", "False", "N
 static const char *basic[] = {
 	/* pronouns, use only subject pronouns */ "I","You","He","She","It","We","You","They",
 	/* question words */ "Who","What","When","Where","Why","Which","Whose","How","With","Without",
-	/* coordination */ "For","And","Nor","Not","But","Or","Yet","So","Else","To"
+	/* coordination */ "For","And","Nor","Not","But","Or","Yet","So","Else","To",
 	/* location */ "At","In","Under","Above","Over","Below","On",
 	/* determiners */ "A","An","That","This","These","Those","Is",
 		/* |-> quantifiers */ "All","None","Some","Few","Most",
