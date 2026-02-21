@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
 #include "words.h"
+#include "flagutils.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
 
@@ -12,7 +12,7 @@ int main (int argc, char* argv[]) {
 	unsigned int len2 = sizeof(marks) / sizeof(marks[0]);
 	unsigned int len3 = sizeof(basic) / sizeof(basic[0]);
 
-	int r1 = 0; /* random value for words */
+	uint r1 = 0; /* random value for words */
 	int r2 = 0; /* random value for marks */
 	int r3 = 0; /* random value for basics */
 
