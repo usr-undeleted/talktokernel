@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <sys/random.h>
 #include "../words.h"
-
-/*add support for making sure getrandom works always with ssize_t or something
-^ move(d) into objeftives alongside;
-separate functions into smth outside main()*/
-
 #define uint unsigned int
 
 int main (int argc, char* argv[]) {
