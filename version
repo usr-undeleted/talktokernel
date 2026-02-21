@@ -23,3 +23,5 @@ Added more pronouns and a bit of syntax change on words.h
 Added a fun message!
 1.3.5 20/2/2026
 New words.h syntax
+1.3.6 20/2/2026
+New code syntax (removed nested ifs)
