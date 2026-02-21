@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/random.h>
-<<<<<<< HEAD
 #include "words.h"
 #include "flagutils.h"
 
 /*add support for making sure getrandom works always with ssize_t or something*/
-=======
 #include "../words.h"
 #define uint unsigned int
->>>>>>> f969a823228eff891fc84d17af254cc64d156e74
 
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
@@ -18,13 +15,8 @@ int main (int argc, char* argv[]) {
 	const uint len3 = sizeof(basic) / sizeof(basic[0]);
 
 	uint r1 = 0; /* random value for words */
-<<<<<<< HEAD
-	int r2 = 0; /* random value for marks */
-	int r3 = 0; /* random value for basics */
-=======
 	uint r2 = 0; /* random value for marks */
 	uint r3 = 0; /* random value for basics */
->>>>>>> f969a823228eff891fc84d17af254cc64d156e74
 
 	int seed = 0; /* seed edited in for loop */
 	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
