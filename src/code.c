@@ -3,9 +3,8 @@
 #include <sys/random.h>
 #include "words.h"
 #include "flagutils.h"
+#include "words.h"
 
-/*add support for making sure getrandom works always with ssize_t or something*/
-#include "../words.h"
 #define uint unsigned int
 
 int main (int argc, char* argv[]) {
