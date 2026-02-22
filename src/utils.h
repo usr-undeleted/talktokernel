@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <sys/utsname.h>
 
-int flagchk(int argc, char *argv[]) {
+int flagchk(int argc, char *argv[]) { /* might be replaced or used over another func */
 	/* int used in returns, return -1 if failed, rest is added on */
 	int flagVal = -1;
 
