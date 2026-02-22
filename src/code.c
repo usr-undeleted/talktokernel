@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <sys/random.h>
 #include "words.h"
-#include "flagutils.h"
 #include "words.h"
+#include "utils.h"
 
 #define uint unsigned int
+#define clear printf("\033[H\033[J")
 
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
@@ -32,6 +33,8 @@ int main (int argc, char* argv[]) {
 		return 2;
 	}
 
+	clear;
+
 	for (int i = 0; i < num; i++) {
 		buf = getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
@@ -45,6 +48,7 @@ int main (int argc, char* argv[]) {
 			printf("%s ", marks[r2]);
 		}
 	}
-	printf("\n--Wise words from the linux kernel...\n");
+	printKernelAuthor();
+	system("date +%d.%m.%y");
 	return 0;
 }

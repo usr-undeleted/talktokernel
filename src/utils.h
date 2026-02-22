@@ -1,0 +1,55 @@
+#ifndef UTILS_H
+#define UTILS_H
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/utsname.h>
+
+
+// Check for a flag val
+// return -1 for invalid or missing val
+static int getFlagVal(const char *arg, char **args, uint maxArgs) {
+	for (int i = 0; i < maxArgs; i++) {
+		if ( !strcmp(arg, args[i]) ) {
+			if (i < maxArgs-1) return atoi(args[i+1]);
+			else return 1;
+		}
+	}
+	return -1;
+}
+
+
+int flagchk(int argc, char *argv[]) {
+	/* int used in returns, return -1 if failed, rest is added on */
+	int flagVal = -1;
+
+	/* array that contains all flags used in the project this will be in
+	 *	 starts with -h and --help by default, remove if those are uneeded */
+	const char *pflags[] = {"--help","-h"};
+	const int arrlen = sizeof(pflags) / sizeof(pflags[0]);
+
+	// argc check, returns 0 if there is just one arg
+	if (argc < 2) return flagVal;
+
+	/* while loop that compares flag arg to entries in pflags then updates and returns the appropriate flagval */
+	for (int i = 0; i < arrlen; i++) {
+		if (strcmp(argv[1], pflags[i]) == 0) {
+			flagVal = i;
+			return flagVal;
+		}
+	}
+	return flagVal;
+}
+
+
+static void printKernelAuthor() {
+	struct utsname kernelNameBuffer;
+	if (uname(&kernelNameBuffer)) {
+		perror("uname");
+		exit(EXIT_FAILURE);
+	}
+	printf("\n\n-- %s, %s\n", kernelNameBuffer.release, kernelNameBuffer.sysname);
+}
+
+#endif

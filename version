@@ -29,3 +29,5 @@ New code syntax (removed nested ifs)
 1.4.0 21/2/2026
 Implemented usr-undeleted's flag utils header (https://github.com/usr-undeleted/c-flag-utils) to the project for anything that will require flags in the future
 
+1.5.0 21/2/2026
+Implementation of fancy fork to clear terminal and print date and kernel name, alongside merging of flag header and fancy fork's header into one.
