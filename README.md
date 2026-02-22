@@ -22,5 +22,11 @@ a.b.c
 a is for complete code changes, for example, a total rewrite of the code, or an addition of a feature that completely changes how to approach the code  
 b is for significant changes, something like more error messages, a huge amount of new words, etc  
 c is for minimal changes, something like correcting typos in words, redoing a small amount of syntax, or correcting a small issue  
+
+FOR THE TESTING BRANCH:
+testing_a.b
+a is for the version of the testing before it gets pushed into the main branch (partially or fully)
+b is for the iteration of the testing version
+
 5. For adding new words:  
 just add cool new words that aren't innapropriate or that actually exist in english, and make sure they don't already exist  
