@@ -15,7 +15,7 @@ int flagchk(int argc, char *argv[]) {
 	const char *pflags[] = {"--help","-h"};
 	const int arrlen = sizeof(pflags) / sizeof(pflags[0]);
 
-	// argc check, returns 0 if there is just one arg
+	/* argc check, returns 0 if there is just one arg */
 	if (argc < 2) return flagVal;
 
 	/* while loop that compares flag arg to entries in pflags then updates and returns the appropriate flagval */
@@ -28,13 +28,13 @@ int flagchk(int argc, char *argv[]) {
 	return flagVal;
 }
 
-static void printKernelAuthor() {
+static void printKernelAuthor() { /* print kernel name and stuff */
 	struct utsname kernelNameBuffer;
 	if (uname(&kernelNameBuffer)) {
 		perror("uname");
 		exit(EXIT_FAILURE);
 	}
 	printf("\n\n-- %s, %s\n", kernelNameBuffer.release, kernelNameBuffer.sysname);
-}
+} /* thank you tinolm for writing this, i couldnt figure out how uname works myself, so this really helps!  */
 
 #endif
