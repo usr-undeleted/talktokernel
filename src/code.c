@@ -10,6 +10,8 @@
 
 void noflag(int num);
 
+int fhelp(int argc);
+
 struct defaultRandomValues {
 	uint len1;
 	uint len2;
@@ -23,23 +25,23 @@ struct defaultRandomValues rvals;
 
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
+	int (*flagfuncs[])(int) = {fhelp}; /* array that contain pointers to functions for flag stuff */
 
-	if (argc != 2) {
-		printf("Error! Did you type a number greater than 0 (if you typed an arg...)?\n");
+	if (argc < 2) {
+		printf("Bad usage! See -h or --help for help.\n(ERR: not enough args)\n");
 		return 1;
 	}
-	/* only set it after ^ to prevent seg fault error */
-	num = atoi(argv[1]);
-	if (num <= 0) { /* check to see if inputted number is valid */
-		printf("Error! Input is invalid or less than 1.\n");
+	num = atoi(argv[1]); /* only set if argv[1] exists - get num from argv[1]*/
+	int flagVal = flagchk(argc,argv); /* get flag value */
+
+	if (num < 1) {
+		printf("Bad usage! See -h or --help for help.\n(ERR: input too small)\n");
 		return 2;
 	}
 
 	/* stuff that prints */
-	printf("\033c"); /* clear terminal */
 	noflag(num); /* start default func */
-	printKernelAuthor();
-	system("date +%d.%m.%y");
+	(*flagfuncs[0])(argc);
 	return 0;
 };
 
@@ -66,3 +68,8 @@ void noflag(int num) {
 	printKernelAuthor();
 	system("date +%d.%m.%y");
 };
+
+int fhelp(int argc) {
+	printf("%d\n",argc);
+	return 10;
+}

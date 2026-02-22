@@ -1,3 +1,5 @@
-testing_1.0
+testing_1.0 21/2/26
 moved flagless function to a separate function, and the values to a struct declared globally
-next update to add experimental flags (-r [random] and -h [help]) and make a modular system
+
+testing_2.0 22/2/26
+adding flag support, will be done today hopefully

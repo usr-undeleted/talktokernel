@@ -6,20 +6,6 @@
 #include <stdlib.h>
 #include <sys/utsname.h>
 
-
-// Check for a flag val
-// return -1 for invalid or missing val
-static int getFlagVal(const char *arg, char **args, uint maxArgs) {
-	for (int i = 0; i < maxArgs; i++) {
-		if ( !strcmp(arg, args[i]) ) {
-			if (i < maxArgs-1) return atoi(args[i+1]);
-			else return 1;
-		}
-	}
-	return -1;
-}
-
-
 int flagchk(int argc, char *argv[]) {
 	/* int used in returns, return -1 if failed, rest is added on */
 	int flagVal = -1;
@@ -41,7 +27,6 @@ int flagchk(int argc, char *argv[]) {
 	}
 	return flagVal;
 }
-
 
 static void printKernelAuthor() {
 	struct utsname kernelNameBuffer;
