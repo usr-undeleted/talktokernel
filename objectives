@@ -1,6 +1,0 @@
-add flags to include more variables into the randomness calculation, stuff like being able to include time (time()), any number the user wants, etc
-reading off of a file (most likely turning the string for the contents of the file into an int with atoi())
-maybe add memory allocation (similar to yes command) to reduce cpu usage, as in, writing things to a buffer then printing that buffer
-rewrite code to have functions (stuff like void action()) in order to make adding flags a lot easier
-flag for letting the user add new orders to the generation (could be done by making a new array that the user can edit)
-use a sizeof(ssize_t) check for getrandom() to prevent errors (technically adding an error message-

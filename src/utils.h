@@ -12,7 +12,7 @@ int flagchk(int argc, char *argv[]) {
 
 	/* array that contains all flags used in the project this will be in
 	 *	 starts with -h and --help by default, remove if those are uneeded */
-	const char *pflags[] = {"--help","-h"};
+	const char *pflags[] = {"--help","-h", "-r"};
 	const int arrlen = sizeof(pflags) / sizeof(pflags[0]);
 
 	/* argc check, returns 0 if there is just one arg */

@@ -6,5 +6,8 @@ added flag support (not quite as modular as i want it to be yet, so maybe i wont
 redid a bit of the error messages too, alongside commenting utils.h properly and removing unused flagutils.h
 need input on wether to make functions be in code.c or in a separate header file
 
-testing_3.0
+testing_3.0 22/2/2026
+proper help message, inf output flag (couldn't add kernel name func sadly) and new line printing
+
+testing_4.0
 aim to get proper error messages in case something fails that isnt covered in an if check
