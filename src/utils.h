@@ -6,50 +6,34 @@
 #include <stdlib.h>
 #include <sys/utsname.h>
 
+/* get arr from caller */
+int *mapflags(int argc, char *argv[], int arr[]) {
+	/* the flags the program will check */
+	const char *pflags[] = {"--help","-h","-i"};
+	const int tflags = sizeof(pflags) / sizeof(pflags[0]);
+	/* set all entries to -1 by default */
+	memset(arr,-1,sizeof(*arr));
 
-// Check for a flag val
-// return -1 for invalid or missing val
-static int getFlagVal(const char *arg, char **args, uint maxArgs) {
-	for (int i = 0; i < maxArgs; i++) {
-		if ( !strcmp(arg, args[i]) ) {
-			if (i < maxArgs-1) return atoi(args[i+1]);
-			else return 1;
+	for (int i = 0; i < argc; i++) {
+		arr[i] = -1; /* by default, entry is -1 as it didnt find a match */
+
+		for (int j = 0; j < tflags; j++) { /* j will be the entry of pflags incase there is a match */
+			if (strcmp(argv[i], pflags[j]) == 0) { /* if the entry matches one of the entries inside pflags*/
+				arr[i] = j; /* pflags gets translated into an int (j) and then put into map */
+				break;
+			}
 		}
 	}
-	return -1;
+	return arr;
 }
 
-
-int flagchk(int argc, char *argv[]) {
-	/* int used in returns, return -1 if failed, rest is added on */
-	int flagVal = -1;
-
-	/* array that contains all flags used in the project this will be in
-	 *	 starts with -h and --help by default, remove if those are uneeded */
-	const char *pflags[] = {"--help","-h"};
-	const int arrlen = sizeof(pflags) / sizeof(pflags[0]);
-
-	// argc check, returns 0 if there is just one arg
-	if (argc < 2) return flagVal;
-
-	/* while loop that compares flag arg to entries in pflags then updates and returns the appropriate flagval */
-	for (int i = 0; i < arrlen; i++) {
-		if (strcmp(argv[1], pflags[i]) == 0) {
-			flagVal = i;
-			return flagVal;
-		}
-	}
-	return flagVal;
-}
-
-
-static void printKernelAuthor() {
+static void printKernelAuthor() { /* print kernel name and stuff */
 	struct utsname kernelNameBuffer;
 	if (uname(&kernelNameBuffer)) {
 		perror("uname");
 		exit(EXIT_FAILURE);
 	}
 	printf("\n\n-- %s, %s\n", kernelNameBuffer.release, kernelNameBuffer.sysname);
-}
+} /* thank you tinolm for writing this, i couldnt figure out how uname works myself, so this really helps!  */
 
 #endif

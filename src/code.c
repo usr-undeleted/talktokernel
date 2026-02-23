@@ -1,42 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/random.h>
-#include "words.h"
+#include <signal.h>
+
 #include "words.h"
 #include "utils.h"
 
 #define uint unsigned int
-#define clear printf("\033[H\033[J")
+#define clear printf("\033c")
+
+/* note that all flag functions must have int num, its a dumb short-coimng of an array of pointers to funcs */
+void noflag(int num); /* flagless */
+void fhelp(int num); /* -h and --help */
+void finfinite(int num); /* -i flag */
+
+uint len1, len2, len3; /* arr length for words, marks and basics */
+uint r1, r2, r3; /* random value for words, marks and basics */
+int seed = 0; /* seed edited in for loop */
+int markc; /* used to type a mark at the end everytime */
 
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
-	const uint len1 = sizeof(words) / sizeof(words[0]);
-	const uint len2 = sizeof(marks) / sizeof(marks[0]);
-	const uint len3 = sizeof(basic) / sizeof(basic[0]);
+	void (*flagfuncs[])(int) = {fhelp,fhelp,finfinite}; /* funcs match flags in utils.h */
+	int arr[argc]; /* previous flagVal */
+	mapflags(argc,argv,arr);
 
-	uint r1 = 0; /* random value for words */
-	uint r2 = 0; /* random value for marks */
-	uint r3 = 0; /* random value for basics */
-
-	int seed = 0; /* seed edited in for loop */
-	uint buf = 0; /* buffer for getrandom(), maybe use memory allocation for that sometime? */
-
-	if (argc != 2) {
-		printf("Error! Did you type a number greater than 0 (if you typed an arg...)?\n");
+	if (argc < 2) {
+		printf("Bad usage! See -h or --help for help.\n(ERR: not enough args)\n");
 		return 1;
 	}
+	num = atoi(argv[1]); /* only set if argv[1] exists - get num from argv[1]*/
 
-	num = atoi(argv[1]); /* only sets it now to prevent checking argv[1] even if it doesnt exist */
+	if (arr[1] != -1) { /* always place flag check b4 flagless check */
+		(*flagfuncs[arr[1]])(argc);
+		return 0;
+	}
 
-	if (num <= 0) { /* check to see if inputted number is valid */
-		printf("Error! Input is invalid or less than 1.\n");
+	if (arr[1] == -1 && num < 1) { /* incase first check fails, send an error message */
+		printf("Bad usage! See -h or --help for help.\n(ERR: invalid secondary arg)\n arr[1] = %d\n", arr[1]);
 		return 2;
 	}
 
-	clear;
+	/* stuff that prints */
+	if (argc == 2) {
+		noflag(num); /* start default func */
+	} else {
+		printf("Bad usage! See -h or --help for help.\n(ERR: too many args!)\n");
+		return 3;
+	}
+	return 0;
+};
 
+void noflag(int num) {
+	len1 = sizeof(words) / sizeof(words[0]);
+	len2 = sizeof(marks) / sizeof(marks[0]);
+	len3 = sizeof(basic) / sizeof(basic[0]);
+
+	clear; /* clear terminal, check macros for context */
 	for (int i = 0; i < num; i++) {
-		buf = getrandom(&seed, sizeof(seed), 0);
+		markc = 0;
+		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
 		r1 = rand() % len1; /* words */
 		r2 = rand() % len2; /* marks */
@@ -46,9 +69,52 @@ int main (int argc, char* argv[]) {
 
 		if (rand() % 5 == 0) { /* mark printing */
 			printf("%s ", marks[r2]);
+			markc = 1;
+		}
+		if (rand() % 10 == 0) { /* new line */
+			if (markc == 0) printf("%s\n ", marks[r2]);
 		}
 	}
+	getrandom(&seed, sizeof(seed), 0);
+	srand(seed);
+	if (markc == 0) printf("%s", marks[r2]);
+	/*^ prints a mark incase the end doesnt have one*/
+
 	printKernelAuthor();
 	system("date +%d.%m.%y");
-	return 0;
+};
+
+void fhelp(int argc) { /* help func, currently uses argc just for testing purposes, but it might need to take in argv since other funcs will need to take it */
+	printf("Thank you for using talktokernel! Usage:\n	<command> <flag> <flaginput>\n By just using <command> <number>, you will use the flagless function and print as usual, using the number in the second argument.\n	-h or --help: Displays this help menu.\n	-i (infinite): prints nonstop. Takes in no arguments. \n");
+	exit(1);
 }
+
+void finfinite(int num) {
+	int markc; /* used to type a mark at the end everytime */
+
+	len1 = sizeof(words) / sizeof(words[0]);
+	len2 = sizeof(marks) / sizeof(marks[0]);
+	len3 = sizeof(basic) / sizeof(basic[0]);
+
+	clear; /* clear terminal, check macros for context */
+	while (true) {
+		markc = 0;
+		getrandom(&seed, sizeof(seed), 0);
+		srand(seed);
+		r1 = rand() % len1; /* words */
+		r2 = rand() % len2; /* marks */
+		r3 = rand() % len3; /* basics */
+
+		printf(" %s %s", words[r1], basic[r3]); /* word printing */
+
+		if (rand() % 5 == 0) { /* mark printing */
+			printf("%s ", marks[r2]);
+			markc = 1;
+		}
+		if (rand() % 10 == 0) { /* new line */
+			if (markc == 0) printf("%s\n ", marks[r2]);
+		}
+	}
+}
+
+/* currently code only checks argv[1], but implementation is less complicated by using the tools in utils.h */
