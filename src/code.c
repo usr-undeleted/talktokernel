@@ -14,8 +14,8 @@ void noflag(int num); /* flagless */
 void fhelp(int num); /* -h and --help */
 void finfinite(int num); /* -i flag */
 
-uint len1, len2, len3; /* arr length for words, marks and basics */
-uint r1, r2, r3; /* random value for words, marks and basics */
+uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
+uint ranwords, ranmarks, ranbasics; /* random value for words, marks and basics */
 int seed = 0; /* seed edited in for loop */
 int markc; /* used to type a mark at the end everytime */
 
@@ -52,67 +52,74 @@ int main (int argc, char* argv[]) {
 };
 
 void noflag(int num) {
-	len1 = sizeof(words) / sizeof(words[0]);
-	len2 = sizeof(marks) / sizeof(marks[0]);
-	len3 = sizeof(basic) / sizeof(basic[0]);
+	lenwords = sizeof(words) / sizeof(words[0]);
+	lenmarks = sizeof(marks) / sizeof(marks[0]);
+	lenbasic = sizeof(basic) / sizeof(basic[0]);
 
 	clear; /* clear terminal, check macros for context */
 	for (int i = 0; i < num; i++) {
 		markc = 0;
 		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
-		r1 = rand() % len1; /* words */
-		r2 = rand() % len2; /* marks */
-		r3 = rand() % len3; /* basics */
+		ranwords = rand() % lenwords; /* words */
+		ranmarks = rand() % lenmarks; /* marks */
+		ranbasics = rand() % lenbasic; /* basics */
 
-		printf(" %s %s", words[r1], basic[r3]); /* word printing */
+		printf(" %s %s", words[ranwords], basic[ranbasics]); /* word printing */
 
 		if (rand() % 5 == 0) { /* mark printing */
-			printf("%s ", marks[r2]);
+			printf("%s ", marks[ranmarks]);
 			markc = 1;
 		}
 		if (rand() % 10 == 0) { /* new line */
-			if (markc == 0) printf("%s\n ", marks[r2]);
+			if (markc == 0) printf("%s\n ", marks[ranmarks]);
 		}
 	}
 	getrandom(&seed, sizeof(seed), 0);
 	srand(seed);
-	if (markc == 0) printf("%s", marks[r2]);
+	if (markc == 0) printf("%s", marks[ranmarks]);
 	/*^ prints a mark incase the end doesnt have one*/
 
 	printKernelAuthor();
 	system("date +%d.%m.%y");
 };
 
-void fhelp(int argc) { /* help func, currently uses argc just for testing purposes, but it might need to take in argv since other funcs will need to take it */
-	printf("Thank you for using talktokernel! Usage:\n	<command> <flag> <flaginput>\n By just using <command> <number>, you will use the flagless function and print as usual, using the number in the second argument.\n	-h or --help: Displays this help menu.\n	-i (infinite): prints nonstop. Takes in no arguments. \n");
+void fhelp(int argc) {
+	fputs("Thank you for using talktokernel! Usage:\n"
+	"    <command> <flag>\n"
+	"\n"
+	"By just using <command> <number>, you will use the flagless function and print\n"
+	"as usual, using the number in the second argument.\n"
+	"\n"
+	"    -h or --help: Displays this help menu.\n"
+	"    -i (infinite): prints nonstop. Takes in no arguments. \n", stderr);
 	exit(1);
 }
 
 void finfinite(int num) {
 	int markc; /* used to type a mark at the end everytime */
 
-	len1 = sizeof(words) / sizeof(words[0]);
-	len2 = sizeof(marks) / sizeof(marks[0]);
-	len3 = sizeof(basic) / sizeof(basic[0]);
+	lenwords = sizeof(words) / sizeof(words[0]);
+	lenmarks = sizeof(marks) / sizeof(marks[0]);
+	lenbasic = sizeof(basic) / sizeof(basic[0]);
 
 	clear; /* clear terminal, check macros for context */
 	while (true) {
 		markc = 0;
 		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
-		r1 = rand() % len1; /* words */
-		r2 = rand() % len2; /* marks */
-		r3 = rand() % len3; /* basics */
+		ranwords = rand() % lenwords; /* words */
+		ranmarks = rand() % lenmarks; /* marks */
+		ranbasics = rand() % lenbasic; /* basics */
 
-		printf(" %s %s", words[r1], basic[r3]); /* word printing */
+		printf(" %s %s", words[ranwords], basic[ranbasics]); /* word printing */
 
 		if (rand() % 5 == 0) { /* mark printing */
-			printf("%s ", marks[r2]);
+			printf("%s ", marks[ranmarks]);
 			markc = 1;
 		}
 		if (rand() % 10 == 0) { /* new line */
-			if (markc == 0) printf("%s\n ", marks[r2]);
+			if (markc == 0) printf("%s\n ", marks[ranmarks]);
 		}
 	}
 }
