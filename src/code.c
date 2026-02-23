@@ -18,7 +18,6 @@ uint len1, len2, len3; /* arr length for words, marks and basics */
 uint r1, r2, r3; /* random value for words, marks and basics */
 int seed = 0; /* seed edited in for loop */
 int markc; /* used to type a mark at the end everytime */
-int buf = 0;
 
 /* int main cus i keep forgetting where it is */
 int main (int argc, char* argv[]) {
@@ -62,7 +61,7 @@ void noflag(int num) {
 	clear; /* clear terminal, check macros for context */
 	for (int i = 0; i < num; i++) {
 		markc = 0;
-		buf = getrandom(&seed, sizeof(seed), 0);
+		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
 		r1 = rand() % len1; /* words */
 		r2 = rand() % len2; /* marks */
@@ -78,7 +77,7 @@ void noflag(int num) {
 			if (markc == 0) printf("%s\n ", marks[r2]);
 		}
 	}
-	buf = getrandom(&seed, sizeof(seed), 0);
+	getrandom(&seed, sizeof(seed), 0);
 	srand(seed);
 	if (markc == 0) printf("%s", marks[r2]);
 	/*^ prints a mark incase the end doesnt have one*/
@@ -102,7 +101,7 @@ void frandom(int num) {
 	clear; /* clear terminal, check macros for context */
 	while (true) {
 		markc = 0;
-		buf = getrandom(&seed, sizeof(seed), 0);
+		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
 		r1 = rand() % len1; /* words */
 		r2 = rand() % len2; /* marks */
