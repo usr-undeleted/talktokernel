@@ -6,26 +6,25 @@
 #include <stdlib.h>
 #include <sys/utsname.h>
 
-int flagchk(int argc, char *argv[]) { /* might be replaced or used over another func */
-	/* int used in returns, return -1 if failed, rest is added on */
-	int flagVal = -1;
+/* get arr from caller */
+int *mapflags(int argc, char *argv[], int arr[]) {
+	/* the flags the program will check */
+	const char *pflags[] = {"--help","-h","-i"};
+	const int tflags = sizeof(pflags) / sizeof(pflags[0]);
+	/* set all entries to -1 by default */
+	memset(arr,-1,sizeof(*arr));
 
-	/* array that contains all flags used in the project this will be in
-	 *	 starts with -h and --help by default, remove if those are uneeded */
-	const char *pflags[] = {"--help","-h", "-r"};
-	const int arrlen = sizeof(pflags) / sizeof(pflags[0]);
+	for (int i = 0; i < argc; i++) {
+		arr[i] = -1; /* by default, entry is -1 as it didnt find a match */
 
-	/* argc check, returns 0 if there is just one arg */
-	if (argc < 2) return flagVal;
-
-	/* while loop that compares flag arg to entries in pflags then updates and returns the appropriate flagval */
-	for (int i = 0; i < arrlen; i++) {
-		if (strcmp(argv[1], pflags[i]) == 0) {
-			flagVal = i;
-			return flagVal;
+		for (int j = 0; j < tflags; j++) { /* j will be the entry of pflags incase there is a match */
+			if (strcmp(argv[i], pflags[j]) == 0) { /* if the entry matches one of the entries inside pflags*/
+				arr[i] = j; /* pflags gets translated into an int (j) and then put into map */
+				break;
+			}
 		}
 	}
-	return flagVal;
+	return arr;
 }
 
 static void printKernelAuthor() { /* print kernel name and stuff */

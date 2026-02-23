@@ -12,20 +12,18 @@
 /* note that all flag functions must have int num, its a dumb short-coimng of an array of pointers to funcs */
 void noflag(int num); /* flagless */
 void fhelp(int num); /* -h and --help */
-void frandom(int num); /* -r flag */
+void finfinite(int num); /* -i flag */
 
 uint len1, len2, len3; /* arr length for words, marks and basics */
 uint r1, r2, r3; /* random value for words, marks and basics */
 int seed = 0; /* seed edited in for loop */
 int markc; /* used to type a mark at the end everytime */
 
-/* int main cus i keep forgetting where it is */
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
-	void (*flagfuncs[])(int) = {fhelp,fhelp,frandom}; /* array that contain pointers to functions for flag stuff
-	note that the first two are fhelp since theres both --help and -h
-	make sure the funcs here match the flags in utils.h */
-	int flagVal = flagchk(argc,argv); /* get flag value */
+	void (*flagfuncs[])(int) = {fhelp,fhelp,finfinite}; /* funcs match flags in utils.h */
+	int arr[argc]; /* previous flagVal */
+	mapflags(argc,argv,arr);
 
 	if (argc < 2) {
 		printf("Bad usage! See -h or --help for help.\n(ERR: not enough args)\n");
@@ -33,13 +31,13 @@ int main (int argc, char* argv[]) {
 	}
 	num = atoi(argv[1]); /* only set if argv[1] exists - get num from argv[1]*/
 
-	if (flagVal != -1) { /* always place flag check b4 flagless check */
-		(*flagfuncs[flagVal])(argc);
+	if (arr[1] != -1) { /* always place flag check b4 flagless check */
+		(*flagfuncs[arr[1]])(argc);
 		return 0;
 	}
 
-	if (flagVal == -1 && num < 1) { /* incase first check fails, send an error message */
-		printf("Bad usage! See -h or --help for help.\n(ERR: invalid secondary arg)\n flagVal = %d\n", flagVal);
+	if (arr[1] == -1 && num < 1) { /* incase first check fails, send an error message */
+		printf("Bad usage! See -h or --help for help.\n(ERR: invalid secondary arg)\n arr[1] = %d\n", arr[1]);
 		return 2;
 	}
 
@@ -87,11 +85,11 @@ void noflag(int num) {
 };
 
 void fhelp(int argc) { /* help func, currently uses argc just for testing purposes, but it might need to take in argv since other funcs will need to take it */
-	printf("Thank you for using talktokernel! Usage:\n	<command> <flag> <flaginput>\n By just using <command> <number>, you will use the flagless function and print as usual, using the number in the second argument.\n	-h or --help: Displays this help menu.\n	-r (random): prints nonstop.\n");
+	printf("Thank you for using talktokernel! Usage:\n	<command> <flag> <flaginput>\n By just using <command> <number>, you will use the flagless function and print as usual, using the number in the second argument.\n	-h or --help: Displays this help menu.\n	-i (infinite): prints nonstop. Takes in no arguments. \n");
 	exit(1);
 }
 
-void frandom(int num) {
+void finfinite(int num) {
 	int markc; /* used to type a mark at the end everytime */
 
 	len1 = sizeof(words) / sizeof(words[0]);
@@ -119,4 +117,4 @@ void frandom(int num) {
 	}
 }
 
-/* implement c-flag-utils new version usr-undeleted is making soon*/
+/* currently code only checks argv[1], but implementation is less complicated by using the tools in utils.h */
