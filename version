@@ -1,13 +1,36 @@
-testing_1.0 21/2/26
-moved flagless function to a separate function, and the values to a struct declared globally
+1.0.0 19/2/2026
+Start of it all!
+1.0.1 19/2/2026
+Improved printing
 
-testing_2.0 22/2/26
-added flag support (not quite as modular as i want it to be yet, so maybe i wont push into main just yet)
-redid a bit of the error messages too, alongside commenting utils.h properly and removing unused flagutils.h
-need input on wether to make functions be in code.c or in a separate header file
+1.1.0 19/2/2026
+Put the words in a header file for organization and made Makefile fancy
+1.1.1 19/2/2026
+Added more words
 
-testing_3.0 22/2/2026
-proper help message, inf output flag (couldn't add kernel name func sadly) and new line printing
+1.2.0 20/2/2026
+More words, added marks with cool chance mechanic, more marks and other minimal stuff
 
-testing_4.0
-aim to get proper error messages in case something fails that isnt covered in an if check
+1.3.0 20/2/2026
+New word system with a modular (when writing) system for basic english words
+1.3.1 20/2/2026
+Added "non" to words
+1.3.2 20/2/2026
+Fixed error message to make more sense
+1.3.3 20/2/2026
+Added more pronouns and a bit of syntax change on words.h
+1.3.4 20/2/2026
+Added a fun message!
+1.3.5 20/2/2026
+New words.h syntax
+1.3.6 20/2/2026
+New code syntax (removed nested ifs)
+
+1.4.0 21/2/2026
+Implemented usr-undeleted's flag utils header (https://github.com/usr-undeleted/c-flag-utils) to the project for anything that will require flags in the future
+
+1.5.0 21/2/2026
+Implementation of fancy fork to clear terminal and print date and kernel name, alongside merging of flag header and fancy fork's header into one.
+
+2.0.0 23/2/2026
+Merging of testing with new flag system
