@@ -104,7 +104,7 @@ void finfinite(int num) {
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
 
 	clear; /* clear terminal, check macros for context */
-	while (true) {
+	while (1) {
 		markc = 0;
 		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
