@@ -83,18 +83,18 @@ void fsaywords(int num) {
 		/* print words */
 		if (usewords) {
 			usewords = 0;
-			printf(" %s ", words[rwords]);
+			printf(" %s",words[rwords]);
 		} else {
 			usewords = 1;
-			printf(" %s", basic[rbasic]);
+			printf(" %s",basic[rbasic]);
 		}
 
 		if (rand() % 5 == 0) { /* mark printing */
-			printf("%s ", marks[rmarks]);
+			printf("%s",marks[rmarks]);
 			markc = 1;
 		}
 		if (rand() % 10 == 0) { /* new line */
-			if (markc == 0) printf("%s\n ", marks[rmarks]);
+			if (markc == 0) printf("%s\n",marks[rmarks]);
 		}
 	}
 
