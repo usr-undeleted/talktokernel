@@ -1,32 +1,38 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <sys/random.h>
+#include <sys/utsname.h>
 #include <signal.h>
+#include <time.h>
 
 #include "words.h"
 #include "utils.h"
 
-#define uint unsigned int
-#define clear printf("\033c")
+typedef unsigned int uint;
+#define CLEAR() printf("\033c")
 
 /* note that all flag functions must have int num, its a dumb short-coimng of an array of pointers to funcs */
 void noflag(int num); /* flagless */
 void fhelp(int num); /* -h and --help */
-void finfinite(int num); /* -i flag */
+void fsaywords(int num); /* -i flag */
 
-uint len1, len2, len3; /* arr length for words, marks and basics */
-uint r1, r2, r3; /* random value for words, marks and basics */
+uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
+uint rwords, rmarks, rbasic; /* random value for words, marks and basics */
 int seed = 0; /* seed edited in for loop */
 int markc; /* used to type a mark at the end everytime */
+int usewords = 1; /* used to correctly print words */
+
+int shouldstop = 0; /* the loop should stop */
 
 int main (int argc, char* argv[]) {
 	int num = 0; /* arg 1*/
-	void (*flagfuncs[])(int) = {fhelp,fhelp,finfinite}; /* funcs match flags in utils.h */
+	void (*flagfuncs[])(int) = {fhelp,fhelp,fsaywords}; /* funcs match flags in utils.h */
 	int arr[argc]; /* previous flagVal */
 	mapflags(argc,argv,arr);
 
 	if (argc < 2) {
-		printf("Bad usage! See -h or --help for help.\n(ERR: not enough args)\n");
+		fputs("Not enough arguments! See -h or --help for help.\n", stderr);
 		return 1;
 	}
 	num = atoi(argv[1]); /* only set if argv[1] exists - get num from argv[1]*/
@@ -37,7 +43,7 @@ int main (int argc, char* argv[]) {
 	}
 
 	if (arr[1] == -1 && num < 1) { /* incase first check fails, send an error message */
-		printf("Bad usage! See -h or --help for help.\n(ERR: invalid secondary arg)\n arr[1] = %d\n", arr[1]);
+		fprintf(stderr, "Secondary argument isn't valid! See -h or --help for help.\n");
 		return 2;
 	}
 
@@ -45,76 +51,79 @@ int main (int argc, char* argv[]) {
 	if (argc == 2) {
 		noflag(num); /* start default func */
 	} else {
-		printf("Bad usage! See -h or --help for help.\n(ERR: too many args!)\n");
+		fputs("Too many arguments! See -h or --help for help.\n", stderr);
 		return 3;
 	}
 	return 0;
 };
 
-void noflag(int num) {
-	len1 = sizeof(words) / sizeof(words[0]);
-	len2 = sizeof(marks) / sizeof(marks[0]);
-	len3 = sizeof(basic) / sizeof(basic[0]);
+void fsaywords(int num) {
+	CLEAR(); /* clear terminal, check macros for context */
 
-	clear; /* clear terminal, check macros for context */
-	for (int i = 0; i < num; i++) {
+	int i = 0;
+	int markc; /* used to type a mark at the end everytime */
+
+	lenwords = sizeof(words) / sizeof(words[0]);
+	lenmarks = sizeof(marks) / sizeof(marks[0]);
+	lenbasic = sizeof(basic) / sizeof(basic[0]);
+
+	while (1) {
+		if (shouldstop) {
+			i++;
+			if (i >	num) break;
+		}
+
 		markc = 0;
 		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
-		r1 = rand() % len1; /* words */
-		r2 = rand() % len2; /* marks */
-		r3 = rand() % len3; /* basics */
+		rwords = rand() / 2 % lenwords;
+		rmarks = rand() % lenmarks;
+		rbasic = rand()  / 2 % lenbasic;
 
-		printf(" %s %s", words[r1], basic[r3]); /* word printing */
+		/* print words */
+		if (usewords) {
+			usewords = 0;
+			printf(" %s ", words[rwords]);
+		} else {
+			usewords = 1;
+			printf(" %s", basic[rbasic]);
+		}
 
 		if (rand() % 5 == 0) { /* mark printing */
-			printf("%s ", marks[r2]);
+			printf("%s ", marks[rmarks]);
 			markc = 1;
 		}
 		if (rand() % 10 == 0) { /* new line */
-			if (markc == 0) printf("%s\n ", marks[r2]);
+			if (markc == 0) printf("%s\n ", marks[rmarks]);
 		}
 	}
+
 	getrandom(&seed, sizeof(seed), 0);
 	srand(seed);
-	if (markc == 0) printf("%s", marks[r2]);
-	/*^ prints a mark incase the end doesnt have one*/
 
-	printKernelAuthor();
-	system("date +%d.%m.%y");
+	if (markc == 0) fputs(marks[rmarks], stdout);
+
+	printkernel();
+	printdate("%d.%m.%y");
+}
+
+void noflag(int num) {
+	shouldstop = 1;
+	fsaywords(num);
 };
 
 void fhelp(int argc) { /* help func, currently uses argc just for testing purposes, but it might need to take in argv since other funcs will need to take it */
-	printf("Thank you for using talktokernel! Usage:\n	<command> <flag> <flaginput>\n By just using <command> <number>, you will use the flagless function and print as usual, using the number in the second argument.\n	-h or --help: Displays this help menu.\n	-i (infinite): prints nonstop. Takes in no arguments. \n");
+	fputs("Thank you for using talktokernel! Usage:\n"
+	"	<command> <flag> <flaginput>\n"
+	"\n"
+	"By just using <command> <number>, you will use the flagless function and print\n"
+	"as usual, using the number in the second argument.\n"
+	"\n"
+	"	-h or --help: Displays this help menu.\n"
+	"	-i (infinite): prints nonstop. Takes in no arguments. \n", stderr);
 	exit(1);
 }
 
-void finfinite(int num) {
-	int markc; /* used to type a mark at the end everytime */
 
-	len1 = sizeof(words) / sizeof(words[0]);
-	len2 = sizeof(marks) / sizeof(marks[0]);
-	len3 = sizeof(basic) / sizeof(basic[0]);
-
-	clear; /* clear terminal, check macros for context */
-	while (true) {
-		markc = 0;
-		getrandom(&seed, sizeof(seed), 0);
-		srand(seed);
-		r1 = rand() % len1; /* words */
-		r2 = rand() % len2; /* marks */
-		r3 = rand() % len3; /* basics */
-
-		printf(" %s %s", words[r1], basic[r3]); /* word printing */
-
-		if (rand() % 5 == 0) { /* mark printing */
-			printf("%s ", marks[r2]);
-			markc = 1;
-		}
-		if (rand() % 10 == 0) { /* new line */
-			if (markc == 0) printf("%s\n ", marks[r2]);
-		}
-	}
-}
 
 /* currently code only checks argv[1], but implementation is less complicated by using the tools in utils.h */
