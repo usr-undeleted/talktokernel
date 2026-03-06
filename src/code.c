@@ -27,52 +27,48 @@ void fhelp(int num); /* -h and --help */
 void fsaywords(int num); /* -i flag */
 void fprintfile(int argc); /* -f flag  */
 
-void procdata(char *data); /* make data (-f flag) global */
-
 uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
 uint rwords, rmarks, rbasic, rcustom; /* random value for words, marks, basics and custom words */
 int seed = 0; /* seed edited in for loop */
 int markc; /* used to type a mark at the end everytime */
+
 int usewords = 1; /* used to correctly print words */
-int fileflag; /* to pick beetwen -f or flagless  */
-
-char argv2[256]; /* global third arg */
-char argv3[256]; /* global fourth arg */
-char *data[8192] = { 0 }; /* global custom word data */
-int garc; /* global argc */
-
 int shouldstop = 0; /* the loop should stop */
 int fileflag = 0; /* determines what words to print (from words.h or custom file) */
 
+char cus[10000][30]; /* file words */
+int cuslen; /* len of cus */
+FILE *fd; /* custom file */
+
+int globargc; /* global argc */
+
 /* objective: check for validity when calling the command */
 int main (int argc, char* argv[]) {
-	fileflag = 0;
 	int num = 0; /* arg 1*/
+	globargc = argc;
 	void (*flagfuncs[])(int) = {fhelp,fhelp,fsaywords,fprintfile}; /* funcs match flags in utils.h */
 	int arr[argc]; /* previous flagVal */
 	mapflags(argc,argv,arr);
 
-	/* make global values */
-	garc = argc;
-	if (argc >= 3) {
-		for (int i = 0; i < strlen(argv[2]); i++) {
-			argv2[i] = argv[2][i];
-		}
-	}
-	if (argc >= 4) {
-		for (int i = 0; i < strlen(argv[3]); i++) {
-			argv3[i] = argv[3][i];
-		}
-	}
+	fd = fopen(argv[2], "r");
 
 	if (argc < 2) {
 		fputs("Not enough arguments! See -h or --help for help.\n", stderr);
 		return 1;
 	}
-	num = atoi(argv[1]); /* only set if argv[1] exists - get num from argv[1]*/
+
+	if (!strcmp(argv[1], "-f") && argc >= 4) {
+		fileflag = 1;
+		num = atoi(argv[3]);
+		if (strcmp(argv[3], "-i")) {
+			shouldstop = 1;
+		}
+	} else {
+		num = atoi(argv[1]);
+	}
 
 	if (arr[1] != -1) { /* always place flag check b4 flagless check */
-		(*flagfuncs[arr[1]])(argc);
+		(*flagfuncs[arr[1]])(num);
 		return 0;
 	}
 
@@ -100,6 +96,7 @@ void fsaywords(int num) {
 	lenwords = sizeof(words) / sizeof(words[0]);
 	lenmarks = sizeof(marks) / sizeof(marks[0]);
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
+	/* cuslen is edited b4 this */
 
 	while (1) {
 		if (shouldstop) {
@@ -113,14 +110,15 @@ void fsaywords(int num) {
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
+		rcustom = rand()  / 2 % cuslen;
 
 		/* print words */
 		if (usewords) {
 			usewords = 0;
-			if (!fileflag) {
-				printf(" %s",words[rwords]);
+			if (fileflag == 1) {
+				printf(" %s",cus[rcustom]);
 			} else {
-				printf(" %s",data[rcustom]);
+				printf(" %s",words[rwords]);
 			}
 		} else {
 			usewords = 1;
@@ -131,7 +129,7 @@ void fsaywords(int num) {
 			printf("%s",marks[rmarks]);
 			markc = 1;
 		}
-		if (rand() % 10 == 0) { /* new line */
+		if (rand() % 14 == 0) { /* new line */
 			if (markc == 0) printf("%s\n",marks[rmarks]);
 		}
 	}
@@ -159,42 +157,33 @@ void fhelp(int argc) { /* has to take in *some* int */
 	"\n"
 	"	-h or --help: Displays this help menu.\n"
 	"	-i (infinite): prints nonstop. Takes in no arguments. \n"
-	"	-f (read from file) takes words from file and replaces the printable words with the ones in the file.\n", stderr);
+	"	-f (read from file) takes words from file and replaces the printable words with the ones in the file.\n"
+	"	Usage: ./binary -f <file> <num>\n"
+	"		Num can be either -i for infinite, or any number you desire.\n", stderr);
 	exit(0);
 }
 
-void fprintfile(int argc) {
+void fprintfile(int num) {
 	/* get file, separate its words onto strings, and plop them onto an array (data) */
-	if (argc < 3) {
-		fputs("Too little arguments! See -h or --help for help.\n",stderr);
-		exit(1);
-	}
-	FILE *fd = fopen(argv2, "r'");
 
 	if (fd == NULL) {
 		fputs("Error! File couldn't be opened. Does the file exist or you have the proper permissions?\n", stderr);
 		exit(1);
 	}
-	char data[8192];
 
-	rewind(fd); /* set pointer back before getting data */
-	while (fgets(data, sizeof(data) / sizeof(char), fd)) {
-		/* get data from file and put it onto data */
+	if (globargc != 4) {
+		fputs("Too little args! See -h or --help for help.\n", stderr);
+		exit(4);
 	}
-	char *ptr = strtok(data, " "); /* separate words */
 
-	while (ptr != NULL) {
-		// do stuff b4 strtok
-		ptr = strtok(NULL, " ");
+	int i = 0;
+	while (fscanf(fd, "%s", cus[i]) == 1 && i < 100) {
+		i++;
 	}
-	procdata(data);
+	cuslen = i;
+
+
+	fsaywords(num);
+
 	fclose(fd);
-	fileflag = 1;
-	shouldstop = 1;
-	fsaywords(garc);
-	exit(0);
-}
-
-void procdata (char *indata) {
-	*data = indata;
 }

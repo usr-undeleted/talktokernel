@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/utsname.h>
+#include <ctype.h>
 
 int *mapflags(int argc, char *argv[], int arr[]) {
 	/* the flags the program will check */
