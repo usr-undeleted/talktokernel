@@ -98,19 +98,20 @@ void fsaywords(int num) {
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
 	/* cuslen is edited b4 this */
 
-	while (1) {
-		if (shouldstop) {
-			i++;
-			if (i >	num) break;
-		}
+	if (shouldstop == 0) {
+		num = -1;
+	}
 
+	for (int j = 0; j != num; j++) {
 		markc = 0;
 		getrandom(&seed, sizeof(seed), 0);
 		srand(seed);
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
-		rcustom = rand()  / 2 % cuslen;
+		if (fileflag == 1) {
+			rcustom = rand()  / 2 % cuslen;
+		}
 
 		/* print words */
 		if (usewords) {
@@ -171,7 +172,7 @@ void fprintfile(int num) {
 		exit(1);
 	}
 
-	if (globargc != 4) {
+	if (globargc < 4) {
 		fputs("Too little args! See -h or --help for help.\n", stderr);
 		exit(4);
 	}
@@ -181,7 +182,6 @@ void fprintfile(int num) {
 		i++;
 	}
 	cuslen = i;
-
 
 	fsaywords(num);
 
