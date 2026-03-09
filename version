@@ -34,3 +34,9 @@ Implementation of fancy fork to clear terminal and print date and kernel name, a
 
 2.0.0 23/2/2026
 Merging of testing with new flag system
+
+3.0.0 5/3/2026
+-f flag working!
+
+4.0.0 9/3/2026
+new fancy color flag!

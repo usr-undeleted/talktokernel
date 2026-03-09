@@ -9,7 +9,7 @@
 
 int *mapflags(int argc, char *argv[], int arr[]) {
 	/* the flags the program will check */
-	const char *pflags[] = {"--help","-h","-i", "-f"};
+	const char *pflags[] = {"--help","-h","-i", "-f", "-c"};
 	const int tflags = sizeof(pflags) / sizeof(pflags[0]);
 
 	for (int i = 0; i < argc; i++) {
