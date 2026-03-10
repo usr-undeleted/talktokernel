@@ -40,3 +40,10 @@ Merging of testing with new flag system
 
 4.0.0 9/3/2026
 new fancy color flag!
+
+5.0.0 10/3/2026
+new func calling system that improves on the old one with minimal downsides
+^ functions now take in arguments properly!!! 
+redid error handling
+5.1.0 (wip)
+make all toggle uints share a single uint8_t (or larger, if necessary) and be read trough bitwise operations
