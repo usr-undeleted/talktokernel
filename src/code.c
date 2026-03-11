@@ -156,14 +156,15 @@ void fsaywords(int num) {
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
 	/* cuslen is edited b4 this */
 
+	getrandom(&seed, sizeof(seed), 0);
+	srand(seed);
+
 	if (!shouldstop) {
 		num = -1;
 	}
 
 	for (int j = 0; j != num; j++) {
 		markc = 0;
-		getrandom(&seed, sizeof(seed), 0);
-		srand(seed);
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
