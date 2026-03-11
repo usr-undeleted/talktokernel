@@ -54,5 +54,6 @@ made printing words or custom words more efficient, replacing ifs with a simple 
 made printing custom words ONLY print custom words, using the patch here ^
 5.0.3 11/3/2026
 unlocked the gates of cpu AND ram hell by unlocking the max amount of custom words to 1 million
+the array that contains alll of that data is only made when necessary, instead of eating ram even when unecessary
 5.1.0 (planned)
 make all toggle uints share a single uint8_t (or larger, if necessary) and be read trough bitwise operations
