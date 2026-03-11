@@ -308,6 +308,11 @@ void fcolor (int num, int argc , char *argv[]) {
 		num = atoi(argv[indexflag + 1]);
 	}
 
+	if (num < 1 && !infexists) {
+		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
+		exit(3);
+	}
+
 	if (argc < 3) {
 		fprintf(stderr, "Too little args! See -h or --help for help.\n");
 		exit(1);
@@ -318,6 +323,7 @@ void fcolor (int num, int argc , char *argv[]) {
 	} else {
 		shouldstop = 1;
 	}
+
 	fsaywords(num);
 
 	exit(0);
