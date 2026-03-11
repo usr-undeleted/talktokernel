@@ -24,7 +24,7 @@ void fprintfile(int num, int argc, char*argv[]); /* -f flag  */
 void fcolor(int num, int argc, char *argv[]); /* -c flag */
 
 uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
-int cuslen; /* len of cus */
+uint cuslen = 1; /* len of cus, has to be set otherwise segment fault, and we dont want more ifs */
 uint rwords, rmarks, rbasic, rcustom, rclr; /* random value for words, marks, basics and custom words */
 int seed = 0; /* seed edited in for loop */
 
@@ -37,6 +37,7 @@ uint infexists = 0; /* check if -i exists */
 uint clrexists = 0; /* check if -c exists */
 uint changenum = 1; /* if num should be changed in the func */
 
+char *tempPtrs[10000]; /* to put inside char** */
 char cus[10000][30]; /* file words */
 FILE *fd; /* custom file */
 
@@ -163,31 +164,36 @@ void fsaywords(int num) {
 		num = -1;
 	}
 
+	/* fileflag determines what it is */
+	char **wordsPoint[2] = {words, tempPtrs};
+	uint *randomPoint[2] = {&rwords,&rcustom};
+	uint random1;
+
+	char **basicPoint[2] = {basic, tempPtrs};
+	uint *randomBasicPoint[2] = {&rbasic,&rcustom};
+	uint random2;
+
 	for (int j = 0; j != num; j++) {
 		markc = 0;
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
+		rcustom = rand() % cuslen;
 		rclr = rand() % 9;
 
-		if (fileflag == 1) {
-			rcustom = rand()  / 2 % cuslen;
-		}
+		random1 = *randomPoint[fileflag];
+		random2 = *randomBasicPoint[fileflag];
 
 		/* print words */
 		if (usewords) {
 			usewords = 0;
-			if (fileflag == 1) {
-				printf(" %s%s%s", colors[rclr], cus[rcustom], reset);
-			} else {
-				printf(" %s%s%s", colors[rclr], words[rwords], reset);
-			}
+			printf(" %s%s%s", colors[rclr], wordsPoint[fileflag][random1], reset);
 		} else {
 			usewords = 1;
-			printf(" %s%s%s", colors[rclr], basic[rbasic], reset);
+			printf(" %s%s%s", colors[rclr], basicPoint[fileflag][random2], reset);
 		}
 
-		if (rand() % 5 == 0) { /* mark printing */
+		if (rand() % 7 == 0) { /* mark printing */
 			printf("%s",marks[rmarks]);
 			markc = 1;
 		}
@@ -251,6 +257,11 @@ void fprintfile(int num, int argc, char*argv[]) {
 	cuslen = i;
 
 	num = atoi(argv[indexflag + 2]);
+
+	/* pointer for char**, represents cus[][] */
+	for (int i = 0; i < cuslen; i++) {
+		tempPtrs[i] = cus[i];
+	}
 
 	/* incase input truly is invalid */
 	if (num < 1 && !infexists) {

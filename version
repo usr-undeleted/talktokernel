@@ -49,5 +49,8 @@ redid error handling
 moved random-ness outside of loop for better perfomance
 noflag now returns 0
 -c now wont accept -1 as a num
+5.0.2 11/3/2026
+made printing words or custom words more efficient, replacing ifs with a simple array of pointers
+made printing custom words ONLY print custom words, using the patch here ^
 5.1.0 (planned)
 make all toggle uints share a single uint8_t (or larger, if necessary) and be read trough bitwise operations
