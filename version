@@ -34,3 +34,20 @@ Implementation of fancy fork to clear terminal and print date and kernel name, a
 
 2.0.0 23/2/2026
 Merging of testing with new flag system
+
+3.0.0 5/3/2026
+-f flag working!
+
+4.0.0 9/3/2026
+new fancy color flag!
+
+5.0.0 10/3/2026
+new func calling system that improves on the old one with minimal downsides
+^ functions now take in arguments properly!!! 
+redid error handling
+5.0.1 11/3/2026
+moved random-ness outside of loop for better perfomance
+noflag now returns 0
+-c now wont accept -1 as a num
+5.1.0 (planned)
+make all toggle uints share a single uint8_t (or larger, if necessary) and be read trough bitwise operations

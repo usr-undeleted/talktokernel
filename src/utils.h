@@ -5,11 +5,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/utsname.h>
+#include <ctype.h>
 
-/* get arr from caller */
 int *mapflags(int argc, char *argv[], int arr[]) {
 	/* the flags the program will check */
-	const char *pflags[] = {"--help","-h","-i"};
+	const char *pflags[] = {"--help","-h","-i", "-f", "-c"};
 	const int tflags = sizeof(pflags) / sizeof(pflags[0]);
 
 	for (int i = 0; i < argc; i++) {
@@ -25,13 +25,25 @@ int *mapflags(int argc, char *argv[], int arr[]) {
 	return arr;
 }
 
-static void printKernelAuthor() { /* print kernel name and stuff */
-	struct utsname kernelNameBuffer;
-	if (uname(&kernelNameBuffer)) {
+void printdate(char* fmt) {
+	time_t now = time(NULL);
+	struct tm *t = localtime(&now);
+	char buf[64];
+
+	strftime(buf, sizeof(buf), fmt, t);
+	fputs(buf, stderr);
+	fputs("\n", stderr);
+
+	return;
+}
+
+void printkernel() { /* print kernel name and stuff */
+	struct utsname unamebuf;
+	if (uname(&unamebuf)) {
 		perror("uname");
 		exit(EXIT_FAILURE);
 	}
-	printf("\n\n-- %s, %s\n", kernelNameBuffer.release, kernelNameBuffer.sysname);
+	printf("\n\n-- %s, %s\n", unamebuf.release, unamebuf.sysname);
 } /* thank you tinolm for writing this, i couldnt figure out how uname works myself, so this really helps!  */
 
 #endif
