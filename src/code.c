@@ -203,6 +203,8 @@ void fsaywords(int num) {
 
 	printkernel();
 	printdate("%d.%m.%y");
+
+	exit(0);
 }
 
 void noflag(int num) {
