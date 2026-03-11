@@ -37,8 +37,9 @@ uint infexists = 0; /* check if -i exists */
 uint clrexists = 0; /* check if -c exists */
 uint changenum = 1; /* if num should be changed in the func */
 
-char *tempPtrs[10000]; /* to put inside char** */
-char cus[10000][30]; /* file words */
+#define customLenSizeMax 1000000
+char *tempPtrs[customLenSizeMax]; /* to put inside char** */
+char cus[customLenSizeMax][30]; /* file words */
 FILE *fd; /* custom file */
 
 /* funcs match flags in utils.h */
@@ -251,7 +252,7 @@ void fprintfile(int num, int argc, char*argv[]) {
 	}
 
 	int i = 0;
-	while (fscanf(fd, "%s", cus[i]) == 1 && i < 100) {
+	while (fscanf(fd, "%s", cus[i]) == 1 && i < customLenSizeMax) {
 		i++;
 	}
 	cuslen = i;
