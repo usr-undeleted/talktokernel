@@ -296,10 +296,11 @@ void fcolor (int num, int argc , char *argv[]) {
 	bgs[7] = "\033[47m";
 	bgs[8] = "\033[40m";
 
+	getrandom(&seed, sizeof(seed), 0);
+	srand(seed);
+
 	if (argc == 2) {
 		while (1) {
-			getrandom(&seed, sizeof(seed), 0);
-			srand(seed);
 			rclr = rand() % 9;
 			printf("%s%s%d%s", colors[rclr], bgs[rclr], rclr, reset);
 		}

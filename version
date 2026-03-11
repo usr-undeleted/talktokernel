@@ -45,5 +45,9 @@ new fancy color flag!
 new func calling system that improves on the old one with minimal downsides
 ^ functions now take in arguments properly!!! 
 redid error handling
-5.1.0 (wip)
+5.0.1 11/3/2026
+moved random-ness outside of loop for better perfomance
+noflag now returns 0
+-c now wont accept -1 as a num
+5.1.0 (planned)
 make all toggle uints share a single uint8_t (or larger, if necessary) and be read trough bitwise operations
