@@ -5,12 +5,12 @@ static const char *words[] = { //Hello, Bye
 	/* coding words */"Declare","Allocate","Memory","True","False","Compile",
 	/* yes/no, ratings, etc */"No","Yes","Terrible","Bad","Ok","Good","Amazing","Non",
 	/* emotions */"Love","Hate","Empathy","Disgust","Fear","Thrill",
-	/* people and their classifications */"Friend", "Foe","Ally","Leader","Slave","Worker",
+	/* people and their classifications */"Friend","Foe","Ally","Leader","Slave","Worker",
 	/* tech/biology */"Organic","Eletronic","Machine","Human","Computer","Machine","Nature","Plant",
-	/* verbs */"Embrace","Reject","Accept","Kill","Help","Destroy","Achieve",
-	/* linux */"Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint",
-	/* idk, name later */ "Achivement","Destruction","Suffering",
-	/* objects */ "City","Cement","Brick","Car"
+	/* verbs */"Embrace","Reject","Accept","Kill","Help","Destroy","Achieve","Clone",
+	/* computation */"Linux", "Kernel", "Arch", "Debian", "Gentoo", "Mint","Git","Windows","BSD","MacOS",
+	/* concepts */ "Achivement","Destruction","Suffering","Capitalism","Communism","Artificial",
+	/* things */ "City","Cement","Brick","Car","Bubble","Song",
 };
 
 static const char *basic[] = {
