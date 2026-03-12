@@ -1,5 +1,6 @@
 // -------NOTES AND OBJECTIVES-------
 // 1. put all funcs that need to proccess data in utils.h, words in words.h, and flag functions here
+// 2. make inputting an invalid flag give an error
 
 #include <stdio.h>
 #include <string.h>
