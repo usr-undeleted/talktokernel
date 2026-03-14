@@ -89,13 +89,14 @@ int indexflag = -1; /* index of arr[n] for firstflag */
 
 /* objective: check for validity when calling the command */
 int main (int argc, char* argv[]) {
-	int num = atoi(argv[1]); /* num user inputs */
-	mapflags(argc,argv,arr); /* arr contains flags */
 
 	if (argc < 2) {
 		fprintf(stderr, "Too little args! See -h or --help for help.\n");
 		return 1;
 	}
+
+	int num = atoi(argv[1]); /* num user inputs */
+	mapflags(argc,argv,arr); /* arr contains flags */
 
 	/* determine first flag */
 	for (int i = 0; i < argc; i++) {
@@ -153,6 +154,11 @@ void fsaywords(int num) {
 
 	int i = 0;
 	int markc; /* used to type a mark at the end everytime */
+
+	if (num < 1) {
+		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
+		exit(3);
+	}
 
 	lenwords = sizeof(words) / sizeof(words[0]);
 	lenmarks = sizeof(marks) / sizeof(marks[0]);
