@@ -155,9 +155,8 @@ void fsaywords(int num) {
 	int i = 0;
 	int markc; /* used to type a mark at the end everytime */
 
-	if (num < 1) {
+	if (num < 1 && !infexists) {
 		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
-		exit(3);
 	}
 
 	lenwords = sizeof(words) / sizeof(words[0]);
@@ -264,21 +263,25 @@ void fprintfile(int num, int argc, char*argv[]) {
 	}
 	cuslen = i;
 
-	num = atoi(argv[indexflag + 2]);
-
 	/* pointer for char**, represents cus[][] */
 	for (int i = 0; i < cuslen; i++) {
 		tempPtrs[i] = cus[i];
+	}
+
+	infexists = 1;
+
+	if (!infexists) {
+		shouldstop = 1;
+		num = atoi(argv[indexflag + 2]);
+	} else {
+		num = -1;
+		shouldstop = 0;
 	}
 
 	/* incase input truly is invalid */
 	if (num < 1 && !infexists) {
 		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
 		exit(3);
-	}
-
-	if (!infexists) {
-		shouldstop = 1;
 	}
 
 	fileflag = 1;
