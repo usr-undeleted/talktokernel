@@ -1,5 +1,6 @@
 // -------NOTES AND OBJECTIVES-------
 // 1. put all funcs that need to proccess data in utils.h, words in words.h, and flag functions here
+// 2. make inputting an invalid flag give an error
 
 #include <stdio.h>
 #include <string.h>
@@ -24,7 +25,7 @@ void fprintfile(int num, int argc, char*argv[]); /* -f flag  */
 void fcolor(int num, int argc, char *argv[]); /* -c flag */
 
 uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
-int cuslen; /* len of cus */
+uint cuslen = 1; /* len of cus, has to be set otherwise segment fault, and we dont want more ifs */
 uint rwords, rmarks, rbasic, rcustom, rclr; /* random value for words, marks, basics and custom words */
 int seed = 0; /* seed edited in for loop */
 
@@ -36,7 +37,9 @@ uint infexists = 0; /* check if -i exists */
 uint clrexists = 0; /* check if -c exists */
 uint changenum = 1; /* if num should be changed in the func */
 
-char cus[10000][30]; /* file words */
+#define customLenSizeMax 1000000
+char *tempPtrs[customLenSizeMax]; /* to put inside char** */
+char cus[customLenSizeMax][30]; /* file words */
 FILE *fd; /* custom file */
 
 /* funcs match flags in utils.h */
@@ -170,6 +173,10 @@ void fsaywords(int num) {
 	int i = 0;
 	int markc; /* used to type a mark at the end everytime */
 
+	if (num < 1 && !infexists) {
+		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
+	}
+
 	lenwords = sizeof(words) / sizeof(words[0]);
 	lenmarks = sizeof(marks) / sizeof(marks[0]);
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
@@ -209,26 +216,22 @@ void fsaywords(int num) {
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
+		rcustom = rand() % cuslen;
 		rclr = rand() % 9;
 
-		if (fileflag == 1) {
-			rcustom = rand()  / 2 % cuslen;
-		}
+		random1 = *randomPoint[fileflag];
+		random2 = *randomBasicPoint[fileflag];
 
 		/* print words */
 		if (usewords) {
 			usewords = 0;
-			if (fileflag == 1) {
-				printf(" %s%s%s", colors[rclr], cus[rcustom], reset);
-			} else {
-				printf(" %s%s%s", colors[rclr], words[rwords], reset);
-			}
+			printf(" %s%s%s", colors[rclr], wordsPoint[fileflag][random1], reset);
 		} else {
 			usewords = 1;
-			printf(" %s%s%s", colors[rclr], basic[rbasic], reset);
+			printf(" %s%s%s", colors[rclr], basicPoint[fileflag][random2], reset);
 		}
 
-		if (rand() % 5 == 0) { /* mark printing */
+		if (rand() % 7 == 0) { /* mark printing */
 			printf("%s",marks[rmarks]);
 			markc = 1;
 		}
@@ -283,12 +286,23 @@ void fprintfile(int num, int argc, char *argv[]) {
 	}
 
 	int i = 0;
-	while (fscanf(fd, "%s", cus[i]) == 1 && i < 100) {
+	while (fscanf(fd, "%s", cus[i]) == 1 && i < customLenSizeMax) {
 		i++;
 	}
 	cuslen = i;
 
-	num = atoi(argv[indexflag + 2]);
+	/* pointer for char**, represents cus[][] */
+	for (int i = 0; i < cuslen; i++) {
+		tempPtrs[i] = cus[i];
+	}
+
+	if (!infexists) {
+		shouldstop = 1;
+		num = atoi(argv[indexflag + 2]);
+	} else {
+		num = -1;
+		shouldstop = 0;
+	}
 
 	/* incase input truly is invalid */
 	if (num < 1 && !infexists) {

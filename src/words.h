@@ -1,7 +1,7 @@
 #ifndef WORDS_H
 #define WORDS_H
 
-static const char *words[] = { //Hello, Bye
+static char *words[] = { //Hello, Bye
 	/* coding words */"Declare","Allocate","Memory","True","False","Compile",
 	/* yes/no, ratings, etc */"No","Yes","Terrible","Bad","Ok","Good","Amazing","Non",
 	/* emotions */"Love","Hate","Empathy","Disgust","Fear","Thrill",
@@ -13,7 +13,7 @@ static const char *words[] = { //Hello, Bye
 	/* things */ "City","Cement","Brick","Car","Bubble","Song",
 };
 
-static const char *basic[] = {
+static char *basic[] = {
 	/* pronouns */ "I","You","He","She","It","We","You","They","Me","His","Hers","Its","Theirs","Ours","Mine","Yours",
 	/* question words */ "Who","What","When","Where","Why","Which","Whose","How","With","Without",
 	/* coordination */ "For","And","Nor","Not","But","Or","Yet","So","Else","To",
@@ -27,6 +27,6 @@ static const char *basic[] = {
 	/* ownership */ "Yours","Mine","Ours","Theirs","Their",
 };
 
-static const char *marks[] = {"!", ".", "?", "...", "?!", "..?"};
+static char *marks[] = {"!", ".", "?", "...", "?!", "..?"};
 
 #endif

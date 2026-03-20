@@ -2,6 +2,8 @@
 Simple program that takes noise from linux's random-ness to pick words and form phrases with a variety of words.  
 Confirmed to work on: Linux distros and FreeBSD  
 Other unix-like OSs might work, but they need confirming.  
+
+Since you can input custom words, I'd recommend using the txt file in https://github.com/dwyl/english-words !  
 # Compiling:
 In the root directory of this repo, run "make", creating a "bin" folder that contains the binary inside.  
 Running make clean (to remove bin directory) is not needed if you want to re-compile, running make alone already cleans up.  
