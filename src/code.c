@@ -32,7 +32,6 @@ int seed = 0; /* seed edited in for loop */
 /* replace with single uint8_t and use bitwise stuff to read */
 uint markc; /* used to type a mark at the end everytime */
 uint usewords = 1; /* used to correctly print words */
-uint shouldstop = 0; /* the loop should stop. by default, assumes -i */
 uint fileflag = 0; /* determines what words to print (from words.h or custom file) */
 uint infexists = 0; /* check if -i exists */
 uint clrexists = 0; /* check if -c exists */
@@ -98,7 +97,11 @@ int main (int argc, char* argv[]) {
 	int num = atoi(argv[1]); /* num user inputs */
 	mapflags(argc,argv,arr); /* arr contains flags */
 
-	/* determine first flag */
+	// get individual flags after a -
+	FOUND_FLAGS s = { 0 };
+	s = getflagstruct(argc, argv, s);
+
+	/* determine first flag, for stuff like -f */
 	for (int i = 0; i < argc; i++) {
 		if (arr[i] != -1) {
 			firstflag = arr[i];
@@ -107,14 +110,29 @@ int main (int argc, char* argv[]) {
 		}
 	}
 
-	/* check if -i or -c exist */
+	// determine flag toggles, check for invalidity
 	for (int i = 0; i < argc; i++) {
-		if (arr[i] == 2) {
+		if (s.I_EXISTS) {
 			infexists = 1;
 		}
 
-		if (arr[i] == 4) {
+		if (s.C_EXISTS) {
 			clrexists = 1;
+		}
+
+		if (s.H_EXISTS) {
+			fhelp();
+			return 0;
+		}
+
+		if (s.INVALID_FLAG) {
+//			fprintf(stderr, "Invalid flag! See -h or --help for help.\n");
+//			return 4;
+		}
+
+		if (s.NO_FLAG) {
+			fprintf(stderr, "No flag inputted! See -h or --help for help.\n");
+			return 5;
 		}
 	}
 
@@ -167,18 +185,31 @@ void fsaywords(int num) {
 	getrandom(&seed, sizeof(seed), 0);
 	srand(seed);
 
-	if (!shouldstop) {
+	if (infexists) {
 		num = -1;
 	}
 
-	/* fileflag determines what it is */
-	char **wordsPoint[2] = {words, tempPtrs};
-	uint *randomPoint[2] = {&rwords,&rcustom};
-	uint random1;
+	if (clrexists) {
+		colors[0] = "\033[30m";
+		colors[1] = "\033[31m";
+		colors[2] = "\033[32m";
+		colors[3] = "\033[33m";
+		colors[4] = "\033[34m";
+		colors[5] = "\033[35m";
+		colors[6] = "\033[36m";
+		colors[7] = "\033[37m";
+		colors[8] = "\033[30m";
 
-	char **basicPoint[2] = {basic, tempPtrs};
-	uint *randomBasicPoint[2] = {&rbasic,&rcustom};
-	uint random2;
+		bgs[0] = "\033[40m";
+		bgs[1] = "\033[41m";
+		bgs[2] = "\033[42m";
+		bgs[3] = "\033[43m";
+		bgs[4] = "\033[44m";
+		bgs[5] = "\033[45m";
+		bgs[6] = "\033[46m";
+		bgs[7] = "\033[47m";
+		bgs[8] = "\033[40m";
+	}
 
 	for (int j = 0; j != num; j++) {
 		markc = 0;
@@ -209,9 +240,6 @@ void fsaywords(int num) {
 		}
 	}
 
-	getrandom(&seed, sizeof(seed), 0);
-	srand(seed);
-
 	if (markc == 0) fputs(marks[rmarks], stdout);
 
 	printkernel();
@@ -221,7 +249,7 @@ void fsaywords(int num) {
 }
 
 void noflag(int num) {
-	shouldstop = 1;
+	infexists = 1;
 	fsaywords(num);
 };
 
@@ -244,7 +272,7 @@ void fhelp() {
 	exit(0);
 }
 
-void fprintfile(int num, int argc, char*argv[]) {
+void fprintfile(int num, int argc, char *argv[]) {
 	/* get file, separate its words onto strings, and plop them onto an array (data) */
 	fd = fopen(argv[indexflag + 1], "r");
 
@@ -283,10 +311,6 @@ void fprintfile(int num, int argc, char*argv[]) {
 	}
 
 	fileflag = 1;
-	if (clrexists) {
-		changenum = 0;
-		fcolor(num,argc,argv);
-	}
 	fsaywords(num);
 	fclose(fd);
 	exit(0);
@@ -296,6 +320,7 @@ void fcolor (int num, int argc , char *argv[]) {
 	/* if succesful, set the ansi color values to their appropriate thing so that
 	when the main func prints, it wont just print nothing when it tries to print
 	the color codes. */
+
 	colors[0] = "\033[30m";
 	colors[1] = "\033[31m";
 	colors[2] = "\033[32m";
@@ -326,9 +351,9 @@ void fcolor (int num, int argc , char *argv[]) {
 		}
 	}
 
-	/* if it this gets invocked by -f, for example */
-	if (changenum) {
-		num = atoi(argv[indexflag + 1]);
+	num = atoi(argv[indexflag + 1]);
+	if (infexists) {
+		num = -1;
 	}
 
 	if (num < 1 && !infexists) {
@@ -339,12 +364,6 @@ void fcolor (int num, int argc , char *argv[]) {
 	if (argc < 3) {
 		fprintf(stderr, "Too little args! See -h or --help for help.\n");
 		exit(1);
-	}
-
-	if (infexists) {
-		shouldstop = 0;
-	} else {
-		shouldstop = 1;
 	}
 
 	fsaywords(num);
