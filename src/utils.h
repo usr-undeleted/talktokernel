@@ -7,9 +7,6 @@
 #include <sys/utsname.h>
 #include <ctype.h>
 
-// both flag funcs are used in tandem
-
-// will check for literal strings
 int *mapflags(int argc, char *argv[], int arr[]) {
 	/* the flags the program will check */
 	const char *pflags[] = {"--help","-h","-i", "-f", "-c"};
@@ -27,63 +24,6 @@ int *mapflags(int argc, char *argv[], int arr[]) {
 	}
 	return arr;
 }
-
-typedef struct {
-	int H_EXISTS;
-	int I_EXISTS;
-	int C_EXISTS;
-	int INVALID_FLAG; // incase user puts wrong input
-	int NO_FLAG; // incase no flag is even inputted
-} FOUND_FLAGS;
-
-// will check for stuff after -
-static inline FOUND_FLAGS getflagstruct (int argc, char *argv[], FOUND_FLAGS s) {
-
-	// toggle that will see if no valid flags
-	// were found (therefore, chk = 0)
-	int chk = 0;
-
-	// first loop will cycle trough all args
-	for (int i = 1; i < argc; i++) {
-
-		// check if '-' exists
-		if (argv[i][0] == '-') {
-
-			// second loop to check all chars
-			// after '-'
-			for (int j = 0; j < strlen(argv[i]); j++) {
-
-				if (argv[i][1] == '\0') { // incase no flag is even inputted
-					s.NO_FLAG = 1;
-					break;
-				}
-
-				// add flags here as needed
-				chk = 0;
-				if (argv[i][j] == 'h') {
-					s.H_EXISTS = 1;
-					chk++;
-				} else if (argv[i][j] == 'i') {
-					s.I_EXISTS = 1;
-					chk++;
-				} else if (argv[i][j] == 'c') {
-					s.C_EXISTS = 1;
-					chk++;
-				} else if (argv[i][j] == 'f') {
-					// blank
-				}
-			}
-		}
-	}
-
-	// incase an invalid flag is found
-	if (!chk) {
-		s.INVALID_FLAG = 1;
-	}
-
-	return s;
-}
-
 
 void printdate(char* fmt) {
 	time_t now = time(NULL);
