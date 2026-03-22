@@ -259,6 +259,8 @@ void fprintfile(int num, int argc, char*argv[]) {
 		tempPtrs[i] = cus[i];
 	}
 
+	infexists = 1;
+
 	if (!infexists) {
 		shouldstop = 1;
 		num = atoi(argv[indexflag + 2]);
