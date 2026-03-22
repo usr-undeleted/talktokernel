@@ -265,7 +265,8 @@ void fhelp() {
 	"		If -c is specified, print with color.\n"
 	"	-c (color) EPILEPSY WARNING!!! Prints words/cells with color\n"
 	"	Usage: ./binary -c <num>\n"
-	"		Num can either be a valid num or -i, and if unset, colors cells for a trippy AND EPILEPSY-INDUCING EFFECT!!! BE AWARE!! I AM GONNA WARN YOU MULITPLE TIMES!! I AM NOT RESPONSIBLE FOR ANY EPILEPSY ATTACKS THE USER MIGHT HAVE!!\n", stderr);
+	"		Num can either be a valid num or -i, and if unset, colors cells for a trippy AND EPILEPSY-INDUCING EFFECT!!! BE AWARE!! I AM GONNA WARN YOU MULITPLE TIMES!! I AM NOT RESPONSIBLE FOR ANY EPILEPSY ATTACKS THE USER MIGHT HAVE!!\n"
+	"This is free software, forever, licensed under the GPL-3.0 license.\nsource code: https://github.com/usr-undeleted/talktokernel\nVersion: 5.0.2\n", stderr);
 	exit(0);
 }
 
