@@ -1,6 +1,5 @@
 // -------NOTES AND OBJECTIVES-------
 // 1. put all funcs that need to proccess data in utils.h, words in words.h, and flag functions here
-// 2. make inputting an invalid flag give an error
 
 #include <stdio.h>
 #include <string.h>
@@ -25,22 +24,19 @@ void fprintfile(int num, int argc, char*argv[]); /* -f flag  */
 void fcolor(int num, int argc, char *argv[]); /* -c flag */
 
 uint lenwords, lenmarks, lenbasic; /* arr length for words, marks and basics */
-uint cuslen = 1; /* len of cus, has to be set otherwise segment fault, and we dont want more ifs */
+int cuslen; /* len of cus */
 uint rwords, rmarks, rbasic, rcustom, rclr; /* random value for words, marks, basics and custom words */
 int seed = 0; /* seed edited in for loop */
 
 /* replace with single uint8_t and use bitwise stuff to read */
 uint markc; /* used to type a mark at the end everytime */
 uint usewords = 1; /* used to correctly print words */
-uint shouldstop = 0; /* the loop should stop. by default, assumes -i */
 uint fileflag = 0; /* determines what words to print (from words.h or custom file) */
 uint infexists = 0; /* check if -i exists */
 uint clrexists = 0; /* check if -c exists */
 uint changenum = 1; /* if num should be changed in the func */
 
-#define customLenSizeMax 1000000
-char *tempPtrs[customLenSizeMax]; /* to put inside char** */
-char cus[customLenSizeMax][30]; /* file words */
+char cus[10000][30]; /* file words */
 FILE *fd; /* custom file */
 
 /* funcs match flags in utils.h */
@@ -89,15 +85,20 @@ int indexflag = -1; /* index of arr[n] for firstflag */
 
 /* objective: check for validity when calling the command */
 int main (int argc, char* argv[]) {
-	int num = atoi(argv[1]); /* num user inputs */
-	mapflags(argc,argv,arr); /* arr contains flags */
 
 	if (argc < 2) {
 		fprintf(stderr, "Too little args! See -h or --help for help.\n");
 		return 1;
 	}
 
-	/* determine first flag */
+	int num = atoi(argv[1]); /* num user inputs */
+	mapflags(argc,argv,arr); /* arr contains flags */
+
+	// get individual flags after a -
+	FOUND_FLAGS s = { 0 };
+	s = getflagstruct(argc, argv, s);
+
+	/* determine first flag, for stuff like -f */
 	for (int i = 0; i < argc; i++) {
 		if (arr[i] != -1) {
 			firstflag = arr[i];
@@ -106,14 +107,29 @@ int main (int argc, char* argv[]) {
 		}
 	}
 
-	/* check if -i or -c exist */
+	// determine flag toggles, check for invalidity
 	for (int i = 0; i < argc; i++) {
-		if (arr[i] == 2) {
+		if (s.I_EXISTS) {
 			infexists = 1;
 		}
 
-		if (arr[i] == 4) {
+		if (s.C_EXISTS) {
 			clrexists = 1;
+		}
+
+		if (s.H_EXISTS) {
+			fhelp();
+			return 0;
+		}
+
+		if (s.INVALID_FLAG) {
+			//			fprintf(stderr, "Invalid flag! See -h or --help for help.\n");
+			//			return 4;
+		}
+
+		if (s.NO_FLAG) {
+			fprintf(stderr, "No flag inputted! See -h or --help for help.\n");
+			return 5;
 		}
 	}
 
@@ -154,10 +170,6 @@ void fsaywords(int num) {
 	int i = 0;
 	int markc; /* used to type a mark at the end everytime */
 
-	if (num < 1 && !infexists) {
-		fprintf(stderr, "Invalid number! See -h or --help for help.\n");
-	}
-
 	lenwords = sizeof(words) / sizeof(words[0]);
 	lenmarks = sizeof(marks) / sizeof(marks[0]);
 	lenbasic = sizeof(basic) / sizeof(basic[0]);
@@ -166,8 +178,30 @@ void fsaywords(int num) {
 	getrandom(&seed, sizeof(seed), 0);
 	srand(seed);
 
-	if (!shouldstop) {
+	if (infexists) {
 		num = -1;
+	}
+
+	if (clrexists) {
+		colors[0] = "\033[30m";
+		colors[1] = "\033[31m";
+		colors[2] = "\033[32m";
+		colors[3] = "\033[33m";
+		colors[4] = "\033[34m";
+		colors[5] = "\033[35m";
+		colors[6] = "\033[36m";
+		colors[7] = "\033[37m";
+		colors[8] = "\033[30m";
+
+		bgs[0] = "\033[40m";
+		bgs[1] = "\033[41m";
+		bgs[2] = "\033[42m";
+		bgs[3] = "\033[43m";
+		bgs[4] = "\033[44m";
+		bgs[5] = "\033[45m";
+		bgs[6] = "\033[46m";
+		bgs[7] = "\033[47m";
+		bgs[8] = "\033[40m";
 	}
 
 	for (int j = 0; j != num; j++) {
@@ -175,22 +209,26 @@ void fsaywords(int num) {
 		rwords = rand() / 2 % lenwords;
 		rmarks = rand() % lenmarks;
 		rbasic = rand()  / 2 % lenbasic;
-		rcustom = rand() % cuslen;
 		rclr = rand() % 9;
 
-		random1 = *randomPoint[fileflag];
-		random2 = *randomBasicPoint[fileflag];
+		if (fileflag == 1) {
+			rcustom = rand()  / 2 % cuslen;
+		}
 
 		/* print words */
 		if (usewords) {
 			usewords = 0;
-			printf(" %s%s%s", colors[rclr], wordsPoint[fileflag][random1], reset);
+			if (fileflag == 1) {
+				printf(" %s%s%s", colors[rclr], cus[rcustom], reset);
+			} else {
+				printf(" %s%s%s", colors[rclr], words[rwords], reset);
+			}
 		} else {
 			usewords = 1;
-			printf(" %s%s%s", colors[rclr], basicPoint[fileflag][random2], reset);
+			printf(" %s%s%s", colors[rclr], basic[rbasic], reset);
 		}
 
-		if (rand() % 7 == 0) { /* mark printing */
+		if (rand() % 5 == 0) { /* mark printing */
 			printf("%s",marks[rmarks]);
 			markc = 1;
 		}
@@ -198,9 +236,6 @@ void fsaywords(int num) {
 			if (markc == 0) printf("%s\n",marks[rmarks]);
 		}
 	}
-
-	getrandom(&seed, sizeof(seed), 0);
-	srand(seed);
 
 	if (markc == 0) fputs(marks[rmarks], stdout);
 
@@ -211,7 +246,7 @@ void fsaywords(int num) {
 }
 
 void noflag(int num) {
-	shouldstop = 1;
+	infexists = 1;
 	fsaywords(num);
 };
 
@@ -230,12 +265,11 @@ void fhelp() {
 	"		If -c is specified, print with color.\n"
 	"	-c (color) EPILEPSY WARNING!!! Prints words/cells with color\n"
 	"	Usage: ./binary -c <num>\n"
-	"		Num can either be a valid num or -i, and if unset, colors cells for a trippy AND EPILEPSY-INDUCING EFFECT!!! BE AWARE!! I AM GONNA WARN YOU MULITPLE TIMES!! I AM NOT RESPONSIBLE FOR ANY EPILEPSY ATTACKS THE USER MIGHT HAVE!!\n"
-	"This is free software, forever, licensed under the GPL-3.0 license.\nsource code: https://github.com/usr-undeleted/talktokernel\nVersion: 5.0.2\n", stderr);
+	"		Num can either be a valid num or -i, and if unset, colors cells for a trippy AND EPILEPSY-INDUCING EFFECT!!! BE AWARE!! I AM GONNA WARN YOU MULITPLE TIMES!! I AM NOT RESPONSIBLE FOR ANY EPILEPSY ATTACKS THE USER MIGHT HAVE!!\n", stderr);
 	exit(0);
 }
 
-void fprintfile(int num, int argc, char*argv[]) {
+void fprintfile(int num, int argc, char *argv[]) {
 	/* get file, separate its words onto strings, and plop them onto an array (data) */
 	fd = fopen(argv[indexflag + 1], "r");
 
@@ -249,25 +283,12 @@ void fprintfile(int num, int argc, char*argv[]) {
 	}
 
 	int i = 0;
-	while (fscanf(fd, "%s", cus[i]) == 1 && i < customLenSizeMax) {
+	while (fscanf(fd, "%s", cus[i]) == 1 && i < 100) {
 		i++;
 	}
 	cuslen = i;
 
-	/* pointer for char**, represents cus[][] */
-	for (int i = 0; i < cuslen; i++) {
-		tempPtrs[i] = cus[i];
-	}
-
-	infexists = 1;
-
-	if (!infexists) {
-		shouldstop = 1;
-		num = atoi(argv[indexflag + 2]);
-	} else {
-		num = -1;
-		shouldstop = 0;
-	}
+	num = atoi(argv[indexflag + 2]);
 
 	/* incase input truly is invalid */
 	if (num < 1 && !infexists) {
@@ -275,15 +296,7 @@ void fprintfile(int num, int argc, char*argv[]) {
 		exit(3);
 	}
 
-	if (!infexists) {
-		shouldstop = 1;
-	}
-
 	fileflag = 1;
-	if (clrexists) {
-		changenum = 0;
-		fcolor(num,argc,argv);
-	}
 	fsaywords(num);
 	fclose(fd);
 	exit(0);
@@ -291,8 +304,9 @@ void fprintfile(int num, int argc, char*argv[]) {
 
 void fcolor (int num, int argc , char *argv[]) {
 	/* if succesful, set the ansi color values to their appropriate thing so that
-	when the main func prints, it wont just print nothing when it tries to print
-	the color codes. */
+	 * when the main func prints, it wont just print nothing when it tries to print
+	 * the color codes. */
+
 	colors[0] = "\033[30m";
 	colors[1] = "\033[31m";
 	colors[2] = "\033[32m";
@@ -323,9 +337,9 @@ void fcolor (int num, int argc , char *argv[]) {
 		}
 	}
 
-	/* if it this gets invocked by -f, for example */
-	if (changenum) {
-		num = atoi(argv[indexflag + 1]);
+	num = atoi(argv[indexflag + 1]);
+	if (infexists) {
+		num = -1;
 	}
 
 	if (num < 1 && !infexists) {
@@ -336,12 +350,6 @@ void fcolor (int num, int argc , char *argv[]) {
 	if (argc < 3) {
 		fprintf(stderr, "Too little args! See -h or --help for help.\n");
 		exit(1);
-	}
-
-	if (infexists) {
-		shouldstop = 0;
-	} else {
-		shouldstop = 1;
 	}
 
 	fsaywords(num);
