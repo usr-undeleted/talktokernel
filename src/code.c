@@ -246,7 +246,6 @@ void fsaywords(int num) {
 }
 
 void noflag(int num) {
-	infexists = 1;
 	fsaywords(num);
 };
 
